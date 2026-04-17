@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Summer Fridays Support</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #FBF4ED;
+    --bg-secondary: #FFFFFF;
+    --bg-surface: #FFFFFF;
+    --bg-elevated: #F3E7DB;
+    --text-primary: #1C1512;
+    --text-secondary: #7A6A5F;
+    --text-muted: #B8A89C;
+    --border: rgba(28,21,18,0.08);
+    --border-hover: rgba(28,21,18,0.18);
+    --accent: #E8A88E;
+    --accent-dark: #D68F73;
+    --accent-dim: rgba(232,168,142,0.14);
+    --bubble-user: #F5E1D2;
+    --bubble-bot: #FFFFFF;
+    --success: #6BC49B;
+    --bubble-1: #F5C7B0;
+    --bubble-2: #F5D9C7;
+    --bubble-3: #E8A88E;
+    --bubble-4: #FFE8D9;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  .header {
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    z-index: 50;
+  }
+  .header-left { display: flex; align-items: center; gap: 16px; }
+  .brand-mark { display: flex; align-items: center; gap: 14px; }
+  .brand-logo { display: flex; align-items: center; flex-shrink: 0; }
+  .brand-wordmark {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+    line-height: 1;
+  }
+  .brand-sub {
+    font-size: 9px; font-weight: 500; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--text-secondary);
+    display: flex; align-items: center; gap: 6px; line-height: 1; margin-top: 6px;
+  }
+  .status-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--success); flex-shrink: 0; }
+  .header-actions { display: flex; align-items: center; gap: 4px; }
+  .icon-btn {
+    background: none; border: none; color: var(--text-secondary); cursor: pointer;
+    width: 36px; height: 36px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s ease;
+  }
+  .icon-btn:hover { color: var(--text-primary); background: var(--accent-dim); }
+  .chat-window {
+    flex: 1; overflow-y: auto; padding: 32px 24px;
+    display: flex; flex-direction: column; gap: 24px;
+    scrollbar-width: thin; scrollbar-color: var(--bg-elevated) transparent;
+    background: var(--bg-primary);
+  }
+  .chat-window::-webkit-scrollbar { width: 4px; }
+  .chat-window::-webkit-scrollbar-track { background: transparent; }
+  .chat-window::-webkit-scrollbar-thumb { background: var(--bg-elevated); border-radius: 2px; }
+  .message-wrapper { display: flex; flex-direction: column; animation: fadeUp 0.35s ease forwards; }
+  .message-wrapper.user { align-items: flex-end; }
+  .message-wrapper.bot { align-items: flex-start; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .bot-label {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 8px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .bot-label::before { content: ''; display: block; width: 14px; height: 1px; background: var(--accent); }
+  .message { padding: 14px 18px; font-size: 14px; line-height: 1.65; max-width: 78%; position: relative; }
+  .message.user {
+    background: var(--bubble-user); border: 1px solid rgba(232,168,142,0.25);
+    border-radius: 16px 16px 4px 16px; color: var(--text-primary); font-weight: 400;
+  }
+  .message.bot {
+    background: var(--bubble-bot); border: 1px solid var(--border);
+    border-radius: 4px 16px 16px 16px; color: var(--text-primary); font-weight: 400;
+    box-shadow: 0 1px 2px rgba(28,21,18,0.03);
+  }
+  .message.bot strong { font-weight: 600; color: var(--text-primary); }
+  .message.bot em { font-style: italic; color: var(--text-secondary); }
+  .message.bot ul { padding-left: 16px; margin: 8px 0; }
+  .message.bot ol { padding-left: 16px; margin: 8px 0; }
+  .message.bot li { margin: 4px 0; color: var(--text-secondary); }
+  .message.bot a { color: var(--accent-dark); text-decoration: underline; text-underline-offset: 3px; font-weight: 500; }
+  .message.bot code { background: var(--bg-elevated); padding: 1px 6px; border-radius: 4px; font-size: 12px; font-family: monospace; color: var(--text-secondary); }
+  .message.bot p { margin-bottom: 8px; }
+  .message.bot p:last-child { margin-bottom: 0; }
+  .message.bot h3 { font-size: 13px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; margin: 10px 0 6px 0; color: var(--text-primary); }
+  .message-time { font-size: 9px; font-weight: 500; letter-spacing: 0.08em; color: var(--text-muted); margin-top: 6px; text-transform: uppercase; }
+  .product-card { margin-top: 12px; background: #ffffff; border-radius: 14px; overflow: hidden; max-width: 340px; width: 100%; transition: transform 0.2s ease, box-shadow 0.2s ease; border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(28,21,18,0.04); }
+  .product-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(28,21,18,0.08); }
+  .product-card-img { width: 100%; height: 180px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #FFF5EC 0%, #F5E1D2 100%); position: relative; padding: 20px; }
+  .product-card-img img { max-width: 85%; max-height: 150px; object-fit: contain; display: block; }
+  .product-card-img .placeholder {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic; font-size: 28px; font-weight: 500;
+    color: var(--accent-dark); text-align: center;
+  }
+  .product-card-body { padding: 16px 20px 18px; background: #ffffff; }
+  .product-card-name { font-size: 15px; font-weight: 600; color: var(--text-primary); letter-spacing: 0.01em; line-height: 1.3; margin-bottom: 2px; }
+  .product-card-subtitle { font-size: 12px; font-weight: 400; color: var(--text-secondary); margin-bottom: 14px; font-style: italic; }
+  .product-card-price-row { display: flex; align-items: baseline; justify-content: flex-end; margin-bottom: 12px; }
+  .product-card-price { font-size: 17px; font-weight: 600; color: var(--text-primary); letter-spacing: -0.01em; }
+  .product-card-btn {
+    display: block; background: var(--text-primary); color: #fff; text-align: center;
+    padding: 12px 16px; border-radius: 8px; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none;
+    transition: background 0.2s ease; font-family: 'Inter', sans-serif;
+  }
+  .product-card-btn:hover { background: var(--accent-dark); }
+  #typing .message.bot { display: flex; gap: 5px; padding: 16px 18px; align-items: center; }
+  .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 1.4s infinite ease-in-out; }
+  .dot:nth-child(2) { animation-delay: 0.2s; }
+  .dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes pulse {
+    0%, 80%, 100% { opacity: 0.25; transform: scale(0.8); }
+    40% { opacity: 1; transform: scale(1); }
+  }
+  .footer-container { background: var(--bg-primary); border-top: 1px solid var(--border); padding: 16px 24px 24px; flex-shrink: 0; }
+  .quick-replies { display: flex; gap: 8px; margin-bottom: 14px; overflow-x: auto; scrollbar-width: none; }
+  .quick-replies::-webkit-scrollbar { display: none; }
+  .qr-btn {
+    background: transparent; border: 1px solid var(--border); color: var(--text-secondary);
+    padding: 8px 16px; border-radius: 20px; font-size: 11px; font-weight: 500;
+    letter-spacing: 0.04em; cursor: pointer; white-space: nowrap;
+    font-family: 'Inter', sans-serif; transition: all 0.15s ease;
+  }
+  .qr-btn:hover { border-color: var(--accent); color: var(--text-primary); background: var(--accent-dim); }
+  .input-wrapper {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--bg-secondary); border: 1px solid var(--border);
+    border-radius: 100px; padding: 4px 4px 4px 22px; transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(28,21,18,0.03);
+  }
+  .input-wrapper:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+  .input-wrapper input {
+    flex: 1; background: transparent; border: none; outline: none;
+    font-size: 14px; font-weight: 400; color: var(--text-primary);
+    font-family: 'Inter', sans-serif; letter-spacing: 0.01em; padding: 10px 0;
+  }
+  .input-wrapper input::placeholder { color: var(--text-muted); }
+  .send-btn-wrapper { position: relative; width: 44px; height: 44px; flex-shrink: 0; }
+  .send-btn {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+    border: none; width: 44px; height: 44px; border-radius: 50%;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s ease; flex-shrink: 0; position: relative; z-index: 2;
+    box-shadow: 0 2px 8px rgba(214,143,115,0.35);
+  }
+  .send-btn:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(214,143,115,0.45); }
+  .send-btn:active { transform: scale(0.95); }
+  .send-btn svg { transition: transform 0.3s ease; }
+  .send-btn:hover svg { transform: translateX(2px) rotate(-12deg); }
+  /* Bubble effect on send */
+  .bubble {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 1;
+  }
+  .send-btn-wrapper.bubbling .bubble {
+    animation: bubbleUp 1.1s ease-out forwards;
+  }
+  .send-btn-wrapper.bubbling .bubble.b1 { width: 8px; height: 8px; background: var(--bubble-1); left: 18px; top: 14px; animation-delay: 0.02s; --drift: -18px; }
+  .send-btn-wrapper.bubbling .bubble.b2 { width: 6px; height: 6px; background: var(--bubble-2); left: 22px; top: 18px; animation-delay: 0.12s; --drift: 14px; }
+  .send-btn-wrapper.bubbling .bubble.b3 { width: 10px; height: 10px; background: var(--bubble-3); left: 14px; top: 16px; animation-delay: 0.06s; --drift: -8px; }
+  .send-btn-wrapper.bubbling .bubble.b4 { width: 5px; height: 5px; background: var(--bubble-4); left: 26px; top: 20px; animation-delay: 0.20s; --drift: 22px; }
+  .send-btn-wrapper.bubbling .bubble.b5 { width: 7px; height: 7px; background: var(--bubble-1); left: 20px; top: 12px; animation-delay: 0.15s; --drift: 4px; }
+  .send-btn-wrapper.bubbling .bubble.b6 { width: 4px; height: 4px; background: var(--bubble-3); left: 12px; top: 22px; animation-delay: 0.25s; --drift: -16px; }
+  @keyframes bubbleUp {
+    0% { opacity: 0; transform: translateY(0) translateX(0) scale(0.3); }
+    15% { opacity: 1; transform: translateY(-8px) translateX(calc(var(--drift) * 0.2)) scale(1); }
+    100% { opacity: 0; transform: translateY(-60px) translateX(var(--drift)) scale(1.2); }
+  }
+  .sparkle {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 3;
+  }
+  .send-btn-wrapper.bubbling .sparkle {
+    animation: sparklePop 0.9s ease-out forwards;
+  }
+  .send-btn-wrapper.bubbling .sparkle.s1 { top: -2px; right: 2px; animation-delay: 0s; }
+  .send-btn-wrapper.bubbling .sparkle.s2 { bottom: 2px; left: -4px; animation-delay: 0.1s; }
+  @keyframes sparklePop {
+    0% { opacity: 0; transform: scale(0) rotate(0deg); }
+    50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
+    100% { opacity: 0; transform: scale(0.4) rotate(360deg); }
+  }
+  .powered-by { text-align: center; font-size: 9px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-muted); margin-top: 14px; }
+  .powered-by a { color: var(--text-secondary); text-decoration: none; transition: color 0.25s ease; position: relative; font-weight: 700; }
+  .powered-by a::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px; background: var(--accent); transition: width 0.3s ease; }
+  .powered-by a:hover { color: var(--text-primary); }
+  .powered-by a:hover::after { width: 100%; }
+  .lang-wrapper { position: relative; z-index: 100; }
+  .lang-dropdown {
+    position: absolute; top: calc(100% + 8px); right: 0;
+    background: var(--bg-secondary); border: 1px solid var(--border-hover);
+    border-radius: 12px; overflow: hidden; min-width: 160px;
+    opacity: 0; visibility: hidden; transform: translateY(-4px);
+    transition: all 0.2s ease; z-index: 200; box-shadow: 0 8px 24px rgba(28,21,18,0.12);
+  }
+  .lang-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0); }
+  .lang-option {
+    display: flex; align-items: center; gap: 10px; width: 100%;
+    padding: 10px 14px; background: none; border: none;
+    color: var(--text-secondary); font-family: 'Inter', sans-serif;
+    font-size: 12px; font-weight: 500; letter-spacing: 0.04em;
+    cursor: pointer; transition: all 0.15s ease; text-align: left;
+  }
+  .lang-option:hover { background: var(--accent-dim); color: var(--text-primary); }
+  .lang-option.active { color: var(--text-primary); font-weight: 600; }
+  .lang-option .lang-flag { font-size: 14px; line-height: 1; font-weight: 700; color: var(--accent-dark); }
+  .lang-option .lang-check { margin-left: auto; opacity: 0; font-size: 10px; color: var(--accent-dark); }
+  .lang-option.active .lang-check { opacity: 1; }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-left">
+    <div class="brand-mark">
+      <div class="brand-logo">
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <div class="brand-wordmark">Summer Fridays</div>
+          <div class="brand-sub">
+            <span class="status-dot"></span>
+            Skin Concierge
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="header-actions">
+    <div class="lang-wrapper">
+      <button class="icon-btn" id="lang-btn" title="Language">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M2 12h20"/>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+      </button>
+      <div class="lang-dropdown" id="lang-dropdown">
+        <button class="lang-option active" data-lang="en" data-welcome="Welcome to Summer Fridays. I can help you pick the right products, answer ingredient questions, and build your perfect routine. What can I help with today?" data-placeholder="Ask about ingredients, routine, skin type...">
+          <span class="lang-flag">EN</span> English
+          <span class="lang-check">&#10003;</span>
+        </button>
+        <button class="lang-option" data-lang="fr" data-welcome="Bienvenue chez Summer Fridays. Je suis là pour vous aider à trouver les bons produits, répondre à vos questions sur les ingrédients et créer votre routine idéale. Comment puis-je vous aider ?" data-placeholder="Ingrédients, routine, type de peau...">
+          <span class="lang-flag">FR</span> Français
+          <span class="lang-check">&#10003;</span>
+        </button>
+        <button class="lang-option" data-lang="es" data-welcome="Bienvenido a Summer Fridays. Estoy aquí para ayudarte a elegir productos, resolver dudas sobre ingredientes y crear tu rutina ideal. ¿En qué puedo ayudarte hoy?" data-placeholder="Ingredientes, rutina, tipo de piel...">
+          <span class="lang-flag">ES</span> Español
+          <span class="lang-check">&#10003;</span>
+        </button>
+        <button class="lang-option" data-lang="zh" data-welcome="歡迎來到 Summer Fridays。我可以協助您挑選產品、解答成分問題，並打造專屬護膚路線。今天有什麼能幫您的嗎？" data-placeholder="詢問成分、護膚路線、膚質...">
+          <span class="lang-flag">中</span> 中文
+          <span class="lang-check">&#10003;</span>
+        </button>
+        <button class="lang-option" data-lang="ja" data-welcome="Summer Fridays へようこそ。お肌に合う製品選び、成分のご質問、ルーティン作りまでお手伝いします。どのようなご相談ですか？" data-placeholder="成分、ルーティン、肌タイプについて...">
+          <span class="lang-flag">JP</span> 日本語
+          <span class="lang-check">&#10003;</span>
+        </button>
+        <button class="lang-option" data-lang="ko" data-welcome="Summer Fridays에 오신 것을 환영합니다. 피부에 맞는 제품 추천, 성분 질문, 루틴 만들기를 도와드립니다. 무엇을 도와드릴까요?" data-placeholder="성분, 루틴, 피부 타입 질문...">
+          <span class="lang-flag">KR</span> 한국어
+          <span class="lang-check">&#10003;</span>
+        </button>
+      </div>
+    </div>
+    <button class="icon-btn" id="restart-btn" title="New conversation">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+        <path d="M3 3v5h5"/>
+      </svg>
+    </button>
+  </div>
+</div>
+<div class="chat-window" id="chat"></div>
+<div class="footer-container">
+  <div class="quick-replies" id="quick-replies"></div>
+  <div class="input-wrapper">
+    <input type="text" id="input" placeholder="Ask about ingredients, routine, skin type..." autocomplete="off">
+    <div class="send-btn-wrapper" id="send-wrapper">
+      <span class="bubble b1"></span>
+      <span class="bubble b2"></span>
+      <span class="bubble b3"></span>
+      <span class="bubble b4"></span>
+      <span class="bubble b5"></span>
+      <span class="bubble b6"></span>
+      <svg class="sparkle s1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5L12 2z" fill="#E8A88E"/>
+      </svg>
+      <svg class="sparkle s2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5L12 2z" fill="#F5C7B0"/>
+      </svg>
+      <button class="send-btn" id="send-btn" title="Send">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2.5 12L21.5 3L18 21L13 14L2.5 12Z" fill="white" stroke="white" stroke-width="1" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div class="powered-by">Powered by <a href="https://squ-ai.vercel.app/" target="_blank" rel="noopener">SQU</a></div>
+</div>
+<script>
+const SUPABASE_URL = 'https://sygsovgnxlrsdqzwhdyc.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_EVCnH60x4JDU1Qlk5uZqBw_i3fmjTan';
+const productNameToId = {
+  'Jet Lag Mask + Moisturizer': 'SF-JLM',
+  'Jet Lag Deep Hydration Serum': 'SF-JDS',
+  'Jet Lag Overnight Eye Serum': 'SF-JES',
+  'Jet Lag Skin Soothing Hydration Mist': 'SF-JHM',
+  'Jet Lag Eye Patches (15 pairs)': 'SF-JEP',
+  'Cloud Dew Gel Cream Moisturizer': 'SF-CDM',
+  'Rich Cushion Cream Ultra Plumping Moisturizer': 'SF-RCC',
+  'Pink Dew Gel Cleanser': 'SF-PDC',
+  'Super Amino Gel Cleanser': 'SF-SAC',
+  'CC Me Vitamin C Serum': 'SF-CCM',
+  'Midnight Ritual Retinol Renewal Serum': 'SF-MRR',
+  'Heavenly Sixteen All-In-One Face Oil': 'SF-HSO',
+  'Gentle Reset Daily Exfoliating Pads': 'SF-GRP',
+  'Light Aura Vitamin C + Peptide Eye Cream': 'SF-LAE',
+  'ShadeDrops SPF 30 Mineral Milk Sunscreen': 'SF-SDS',
+  'Lip Butter Balm': 'SF-LBB',
+  'Summer Silk Nourishing Body Lotion': 'SF-SNL'
+};
+async function trackCardEvent(eventType, cardProductId, cardProductName) {
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/product_card_events`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        chat_id: chatId,
+        card_product_id: cardProductId,
+        card_product_name: cardProductName,
+        event_type: eventType
+      })
+    });
+  } catch(e) { /* fail silently */ }
+}
+const params = new URLSearchParams(window.location.search);
+const productId = params.get('product') || 'SF-JLM';
+const CONFIG = {
+  bot: "Summer Fridays",
+  webhook: "https://n8n.srv1208833.hstgr.cloud/webhook/summer_fridays_chat",
+  welcome: "Welcome to Summer Fridays. I can help you pick the right products, answer ingredient questions, and build your perfect routine. What can I help with today?",
+  questions: ["My skin type", "Ingredients", "AM routine", "PM routine", "Build my routine"]
+};
+const questionsPerLang = {
+  en: ["My skin type", "Ingredients", "AM routine", "PM routine", "Build my routine"],
+  fr: ["Mon type de peau", "Ingrédients", "Routine matin", "Routine soir", "Créer ma routine"],
+  es: ["Mi tipo de piel", "Ingredientes", "Rutina mañana", "Rutina noche", "Crear mi rutina"],
+  zh: ["我的膚質", "成分", "早晨護膚", "夜間護膚", "訂製路線"],
+  ja: ["肌タイプ", "成分", "朝のケア", "夜のケア", "ルーティン作成"],
+  ko: ["피부 타입", "성분", "아침 루틴", "저녁 루틴", "루틴 추천"]
+};
+let chatId = 'sf_' + Math.random().toString(36).substr(2, 9);
+let currentLang = 'en';
+let isSending = false;
+function detectCountry() {
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+    const locale = navigator.language || 'en-US';
+    const regionFromLocale = locale.split('-')[1] || '';
+    const tzCountry = {
+      'Asia/Hong_Kong': 'HK', 'Asia/Taipei': 'TW', 'Asia/Tokyo': 'JP',
+      'Asia/Seoul': 'KR', 'Asia/Singapore': 'SG', 'Asia/Shanghai': 'CN',
+      'Asia/Bangkok': 'TH', 'Asia/Jakarta': 'ID',
+      'Europe/Paris': 'FR', 'Europe/London': 'GB', 'Europe/Berlin': 'DE',
+      'Europe/Madrid': 'ES', 'Europe/Rome': 'IT', 'Europe/Zurich': 'CH',
+      'Europe/Amsterdam': 'NL', 'Europe/Brussels': 'BE',
+      'America/New_York': 'US', 'America/Chicago': 'US',
+      'America/Los_Angeles': 'US', 'America/Denver': 'US',
+      'America/Toronto': 'CA', 'America/Vancouver': 'CA',
+      'America/Mexico_City': 'MX', 'America/Sao_Paulo': 'BR',
+      'Australia/Sydney': 'AU', 'Australia/Melbourne': 'AU',
+      'Pacific/Auckland': 'NZ',
+    };
+    return tzCountry[tz] || regionFromLocale.toUpperCase() || 'US';
+  } catch(e) {
+    return 'US';
+  }
+}
+function getCurrency(country) {
+  const map = {
+    'US': 'USD', 'CA': 'CAD', 'GB': 'GBP',
+    'FR': 'EUR', 'DE': 'EUR', 'ES': 'EUR', 'IT': 'EUR',
+    'NL': 'EUR', 'BE': 'EUR', 'CH': 'CHF',
+    'HK': 'HKD', 'TW': 'TWD', 'JP': 'JPY', 'KR': 'KRW',
+    'SG': 'SGD', 'CN': 'CNY', 'TH': 'THB', 'ID': 'IDR',
+    'AU': 'AUD', 'NZ': 'NZD', 'MX': 'MXN', 'BR': 'BRL',
+  };
+  return map[country] || 'USD';
+}
+const userCountry = detectCountry();
+const userCurrency = getCurrency(userCountry);
+const chat = document.getElementById('chat');
+const input = document.getElementById('input');
+const sendWrapper = document.getElementById('send-wrapper');
+function triggerBubbles() {
+  sendWrapper.classList.remove('bubbling');
+  void sendWrapper.offsetWidth;
+  sendWrapper.classList.add('bubbling');
+  setTimeout(() => sendWrapper.classList.remove('bubbling'), 1200);
+}
+function parseMarkdown(text) {
+  let html = text
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  html = html.replace(/(?<!href=")(https?:\/\/[^\s<"]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+  html = html.replace(/^[\*\-] (.+)$/gm, '<li>$1</li>');
+  html = html.replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>');
+  html = html.replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
+  html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+  const lines = html.split('\n');
+  return lines.map(line => {
+    const t = line.trim();
+    if (!t) return '';
+    if (/^<(ul|ol|li|h[1-6])/.test(t)) return t;
+    return `<p>${t}</p>`;
+  }).filter(Boolean).join('\n');
+}
+function buildProductCard(card) {
+  const productMeta = {
+    'Jet Lag Mask + Moisturizer':                       { subtitle: 'Hydrating Mask + Moisturizer' },
+    'Jet Lag Deep Hydration Serum':                     { subtitle: 'Plumping Hyaluronic Serum' },
+    'Jet Lag Overnight Eye Serum':                      { subtitle: 'Overnight Eye Treatment' },
+    'Jet Lag Skin Soothing Hydration Mist':             { subtitle: 'Soothing Hydration Mist' },
+    'Jet Lag Eye Patches (15 pairs)':                   { subtitle: 'De-Puffing Eye Patches' },
+    'Cloud Dew Gel Cream Moisturizer':                  { subtitle: 'Oil-Free Gel Cream' },
+    'Rich Cushion Cream Ultra Plumping Moisturizer':    { subtitle: 'Ultra Plumping Moisturizer' },
+    'Pink Dew Gel Cleanser':                            { subtitle: 'Gentle Daily Cleanser' },
+    'Super Amino Gel Cleanser':                         { subtitle: 'Barrier Repair Cleanser' },
+    'CC Me Vitamin C Serum':                            { subtitle: 'Brightening Vitamin C Serum' },
+    'Midnight Ritual Retinol Renewal Serum':            { subtitle: 'Overnight Retinol Serum' },
+    'Heavenly Sixteen All-In-One Face Oil':             { subtitle: '16 Oil Nourishing Blend' },
+    'Gentle Reset Daily Exfoliating Pads':              { subtitle: 'PHA + Lactic Acid Pads' },
+    'Light Aura Vitamin C + Peptide Eye Cream':         { subtitle: 'Brightening Eye Cream' },
+    'ShadeDrops SPF 30 Mineral Milk Sunscreen':         { subtitle: 'Mineral SPF 30 Sunscreen' },
+    'Lip Butter Balm':                                  { subtitle: 'Nourishing Lip Balm' },
+    'Summer Silk Nourishing Body Lotion':               { subtitle: 'Nourishing Body Lotion' },
+  };
+  const meta = productMeta[card.name] || { subtitle: '' };
+  const cardProductId = productNameToId[card.name] || card.name;
+  trackCardEvent('impression', cardProductId, card.name);
+  const div = document.createElement('div');
+  div.className = 'product-card';
+  const imgHtml = card.image
+    ? `<img src="${card.image}" alt="${card.name}" onerror="this.parentElement.innerHTML='<div class=\\'placeholder\\'>Summer Fridays</div>';">`
+    : `<div class="placeholder">Summer Fridays</div>`;
+  div.innerHTML = `
+    <div class="product-card-img">${imgHtml}</div>
+    <div class="product-card-body">
+      <div class="product-card-name">${card.name}</div>
+      <div class="product-card-subtitle">${meta.subtitle}</div>
+      <div class="product-card-price-row">
+        <div class="product-card-price">${card.price}</div>
+      </div>
+      ${card.url ? `<a href="${card.url}" target="_blank" rel="noopener" class="product-card-btn">Shop now</a>` : ''}
+    </div>
+  `;
+  const buyBtn = div.querySelector('.product-card-btn');
+  if (buyBtn) {
+    buyBtn.addEventListener('click', () => {
+      trackCardEvent('click', cardProductId, card.name);
+    });
+  }
+  return div;
+}
+function addMsg(text, type, card = null) {
+  const wrapper = document.createElement('div');
+  wrapper.className = `message-wrapper ${type}`;
+  const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  if (type === 'bot') {
+    const label = document.createElement('div');
+    label.className = 'bot-label';
+    label.textContent = 'Summer Fridays';
+    wrapper.appendChild(label);
+  }
+  const msgDiv = document.createElement('div');
+  msgDiv.className = `message ${type}`;
+  if (type === 'bot') {
+    msgDiv.innerHTML = parseMarkdown(text);
+  } else {
+    msgDiv.textContent = text;
+  }
+  wrapper.appendChild(msgDiv);
+  if (card) wrapper.appendChild(buildProductCard(card));
+  const timeDiv = document.createElement('div');
+  timeDiv.className = 'message-time';
+  timeDiv.textContent = time;
+  wrapper.appendChild(timeDiv);
+  chat.appendChild(wrapper);
+  chat.scrollTop = chat.scrollHeight;
+}
+function showTyping() {
+  const div = document.createElement('div');
+  div.id = 'typing';
+  div.className = 'message-wrapper bot';
+  const label = document.createElement('div');
+  label.className = 'bot-label';
+  label.textContent = 'Summer Fridays';
+  div.appendChild(label);
+  const msg = document.createElement('div');
+  msg.className = 'message bot';
+  msg.innerHTML = '<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+  div.appendChild(msg);
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+async function handleSend(textOverride) {
+  const text = textOverride || input.value.trim();
+  if (!text || isSending) return;
+  input.value = '';
+  document.getElementById('quick-replies').style.display = 'none';
+  isSending = true;
+  input.disabled = true;
+  document.getElementById('send-btn').disabled = true;
+  triggerBubbles();
+  addMsg(text, 'user');
+  showTyping();
+  try {
+    const res = await fetch(CONFIG.webhook, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text, productId, chatId, language: currentLang, country: userCountry, currency: userCurrency })
+    });
+    const data = await res.json();
+    if (document.getElementById('typing')) document.getElementById('typing').remove();
+    addMsg(
+      data.reply || "I'm having trouble connecting. Please try again.",
+      'bot',
+      data.product_card || null
+    );
+  } catch(e) {
+    if (document.getElementById('typing')) document.getElementById('typing').remove();
+    addMsg("Connection issue. Please check your network and try again.", 'bot');
+  } finally {
+    isSending = false;
+    input.disabled = false;
+    document.getElementById('send-btn').disabled = false;
+    input.focus();
+  }
+}
+function init() {
+  chat.innerHTML = '';
+  addMsg(CONFIG.welcome, 'bot');
+  const qr = document.getElementById('quick-replies');
+  qr.innerHTML = '';
+  qr.style.display = 'flex';
+  const questions = questionsPerLang[currentLang] || questionsPerLang.en;
+  questions.forEach(q => {
+    const b = document.createElement('button');
+    b.className = 'qr-btn';
+    b.textContent = q;
+    b.onclick = () => handleSend(q);
+    qr.appendChild(b);
+  });
+}
+document.getElementById('send-btn').onclick = () => handleSend();
+input.onkeypress = e => { if (e.key === 'Enter') handleSend(); };
+document.getElementById('restart-btn').onclick = () => {
+  chatId = 'sf_' + Math.random().toString(36).substr(2, 9);
+  init();
+};
+const langBtn = document.getElementById('lang-btn');
+const langDropdown = document.getElementById('lang-dropdown');
+langBtn.onclick = (e) => {
+  e.stopPropagation();
+  langDropdown.classList.toggle('open');
+};
+document.addEventListener('click', () => {
+  langDropdown.classList.remove('open');
+});
+langDropdown.addEventListener('click', (e) => {
+  e.stopPropagation();
+});
+document.querySelectorAll('.lang-option').forEach(opt => {
+  opt.onclick = () => {
+    const lang = opt.dataset.lang;
+    const welcome = opt.dataset.welcome;
+    const placeholder = opt.dataset.placeholder;
+    currentLang = lang;
+    document.querySelectorAll('.lang-option').forEach(o => o.classList.remove('active'));
+    opt.classList.add('active');
+    CONFIG.welcome = welcome;
+    input.placeholder = placeholder;
+    langDropdown.classList.remove('open');
+    chatId = 'sf_' + Math.random().toString(36).substr(2, 9);
+    init();
+  };
+});
+init();
+</script>
+</body>
+</html>
