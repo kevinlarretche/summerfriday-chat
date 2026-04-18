@@ -131,10 +131,16 @@
   .product-card-img {
     width: 100%; aspect-ratio: 1 / 1;
     display: flex; align-items: center; justify-content: center;
-    background: #EEEDEC; position: relative; padding: 0;
+    background: #ffffff; position: relative; padding: 0;
     overflow: hidden;
   }
-  .product-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  /* Scale the image up to crop out the source whitespace around the product */
+  .product-card-img img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    transform: scale(1.35);
+    display: block;
+  }
   .product-card-img .placeholder {
     font-family: 'Pinyon Script', cursive, sans-serif;
     font-size: 36px; font-weight: 400;
@@ -444,27 +450,6 @@ const productNameToId = {
   'Lip Butter Balm': 'SF-LBB',
   'Summer Silk Nourishing Body Lotion': 'SF-SNL'
 };
-// Product image fallback map — scraped from summerfridays.com
-// Used when webhook response doesn't include card.image
-const productImageMap = {
-  'SF-JLM': 'https://cdn.shopify.com/s/files/1/2382/2877/files/Jet-Lag-Main-Square.jpg?width=600',
-  'SF-JDS': 'https://cdn.shopify.com/s/files/1/2382/2877/files/Jet-Lag-Deep-Hydration-Serum-Square.jpg?width=600',
-  'SF-JES': 'https://cdn.shopify.com/s/files/1/2382/2877/files/Jet-Lag-Overnight-Eye-Serum-Main-Square.jpg?width=600',
-  'SF-JHM': 'https://cdn.shopify.com/s/files/1/2382/2877/files/Jet-Lag-Mist-Square.jpg?width=600',
-  'SF-JEP': 'https://cdn.shopify.com/s/files/1/2382/2877/files/Jet-Lag-Eye-Patches-15-Main.jpg?width=600',
-  'SF-CDM': 'https://cdn.shopify.com/s/files/1/2382/2877/files/CloudDew2026Main.jpg?width=600',
-  'SF-RCC': 'https://cdn.shopify.com/s/files/1/2382/2877/files/Rich-Cushion-Cream-Main-Square_a0087081-82f6-4b78-88d4-3cead4c029bd.jpg?width=600',
-  'SF-PDC': 'https://cdn.shopify.com/s/files/1/2382/2877/files/PinkDewCleanserMain.jpg?width=600',
-  'SF-SAC': 'https://cdn.shopify.com/s/files/1/2382/2877/files/Main_PDP_1-9.jpg?width=600',
-  'SF-CCM': 'https://cdn.shopify.com/s/files/1/2382/2877/files/Main_PDP_1-15.jpg?width=600',
-  'SF-MRR': 'https://cdn.shopify.com/s/files/1/2382/2877/files/Main_PDP_1-13.jpg?width=600',
-  'SF-HSO': 'https://cdn.shopify.com/s/files/1/2382/2877/files/Main_PDP_1-11.jpg?width=600',
-  'SF-GRP': 'https://cdn.shopify.com/s/files/1/2382/2877/files/GentleResetMainV2.jpg?width=600',
-  'SF-LAE': 'https://cdn.shopify.com/s/files/1/2382/2877/files/Main_PDP_1-10.jpg?width=600',
-  'SF-SDS': 'https://cdn.shopify.com/s/files/1/2382/2877/files/Main_PDP_1-12_17a217ad-88a8-47e7-99a1-075bd8273fdc.jpg?width=600',
-  'SF-LBB': 'https://cdn.shopify.com/s/files/1/2382/2877/files/Square-Lip-Butter-Balm-Vanilla-Main.jpg?width=600',
-  'SF-SNL': 'https://cdn.shopify.com/s/files/1/2382/2877/files/Summer-Silk-Main-Square.jpg?width=600'
-};
 async function trackCardEvent(eventType, cardProductId, cardProductName) {
   try {
     await fetch(`${SUPABASE_URL}/rest/v1/product_card_events_sf`, {
@@ -590,14 +575,22 @@ function buildProductCard(card) {
     'Summer Silk Nourishing Body Lotion':               { subtitle: 'Nourishing Body Lotion' },
   };
   const meta = productMeta[card.name] || { subtitle: '' };
-  const cardProductId = productNameToId[card.name] || card.name;
+  // Normalize name for resilient lookup: strip ™ ® ©, lowercase, collapse whitespace
+  const normalize = s => (s || '').replace(/[™®©]/g, '').replace(/\s+/g, ' ').trim().toLowerCase();
+  const normalizedName = normalize(card.name);
+  // Build normalized lookup once
+  if (!window._normalizedProductMap) {
+    window._normalizedProductMap = {};
+    Object.keys(productNameToId).forEach(k => {
+      window._normalizedProductMap[normalize(k)] = productNameToId[k];
+    });
+  }
+  const cardProductId = window._normalizedProductMap[normalizedName] || productNameToId[card.name] || card.name;
   trackCardEvent('impression', cardProductId, card.name);
   const div = document.createElement('div');
   div.className = 'product-card';
-  // Fall back to scraped image map if webhook doesn't provide one
-  const imgSrc = card.image || productImageMap[cardProductId] || null;
-  const imgHtml = imgSrc
-    ? `<img src="${imgSrc}" alt="${card.name}" onerror="this.parentElement.innerHTML='<div class=\\'placeholder\\'>Summer Fridays</div>';">`
+  const imgHtml = card.image
+    ? `<img src="${card.image}" alt="${card.name}" onerror="this.parentElement.innerHTML='<div class=\\'placeholder\\'>Summer Fridays</div>';">`
     : `<div class="placeholder">Summer Fridays</div>`;
   div.innerHTML = `
     <div class="product-card-img">${imgHtml}</div>
