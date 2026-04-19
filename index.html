@@ -466,6 +466,29 @@ const productNameToId = {
   'Lip Butter Balm': 'SF-LBB',
   'Summer Silk Nourishing Body Lotion': 'SF-SNL'
 };
+// Shopify variant IDs scraped from summerfridays.com/products.json.
+// These power a real one-click add-to-bag: clicking the URL adds the item
+// to the visitor's Shopify cart and lands them on the cart page.
+// If the n8n webhook returns card.cart_url, that takes precedence over this map.
+const productNameToCartUrl = {
+  'Jet Lag Mask + Moisturizer':                    'https://summerfridays.com/cart/add?id=40139555897421&quantity=1&return_to=/cart',
+  'Jet Lag Deep Hydration Serum':                  'https://summerfridays.com/cart/add?id=41208029347917&quantity=1&return_to=/cart',
+  'Jet Lag Overnight Eye Serum':                   'https://summerfridays.com/cart/add?id=40337077207117&quantity=1&return_to=/cart',
+  'Jet Lag Skin Soothing Hydration Mist':          'https://summerfridays.com/cart/add?id=41207891066957&quantity=1&return_to=/cart',
+  'Jet Lag Eye Patches (15 pairs)':                'https://summerfridays.com/cart/add?id=42797720404045&quantity=1&return_to=/cart',
+  'Cloud Dew Gel Cream Moisturizer':               'https://summerfridays.com/cart/add?id=42073691226189&quantity=1&return_to=/cart',
+  'Rich Cushion Cream Ultra Plumping Moisturizer': 'https://summerfridays.com/cart/add?id=40139555962957&quantity=1&return_to=/cart',
+  'Pink Dew Gel Cleanser':                         'https://summerfridays.com/cart/add?id=42103445946445&quantity=1&return_to=/cart',
+  'Super Amino Gel Cleanser':                      'https://summerfridays.com/cart/add?id=31936853606477&quantity=1&return_to=/cart',
+  'CC Me Vitamin C Serum':                         'https://summerfridays.com/cart/add?id=28908339658829&quantity=1&return_to=/cart',
+  'Midnight Ritual Retinol Renewal Serum':         'https://summerfridays.com/cart/add?id=39926724755533&quantity=1&return_to=/cart',
+  'Heavenly Sixteen All-In-One Face Oil':          'https://summerfridays.com/cart/add?id=39421453500493&quantity=1&return_to=/cart',
+  'Gentle Reset Daily Exfoliating Pads':           'https://summerfridays.com/cart/add?id=41795500900429&quantity=1&return_to=/cart',
+  'Light Aura Vitamin C + Peptide Eye Cream':      'https://summerfridays.com/cart/add?id=39545402949709&quantity=1&return_to=/cart',
+  'ShadeDrops SPF 30 Mineral Milk Sunscreen':      'https://summerfridays.com/cart/add?id=40068302962765&quantity=1&return_to=/cart',
+  'Lip Butter Balm':                               'https://summerfridays.com/cart/add?id=39408922853453&quantity=1&return_to=/cart',
+  'Summer Silk Nourishing Body Lotion':            'https://summerfridays.com/cart/add?id=39687368245325&quantity=1&return_to=/cart'
+};
 async function trackCardEvent(eventType, cardProductId, cardProductName) {
   try {
     await fetch(`${SUPABASE_URL}/rest/v1/product_card_events_sf`, {
@@ -501,14 +524,37 @@ const questionsPerLang = {
   ja: ["肌タイプ", "成分", "朝のケア", "夜のケア", "ルーティン作成"],
   ko: ["피부 타입", "성분", "아침 루틴", "저녁 루틴", "루틴 추천"]
 };
-// Post-add-to-bag contextual follow-up (sent to webhook as a synthetic user message)
-const addToBagFollowUpPerLang = {
-  en: (name) => `I just added ${name} to my bag. What would you pair it with?`,
-  fr: (name) => `Je viens d'ajouter ${name} à mon panier. Que me recommandez-vous pour l'accompagner ?`,
-  es: (name) => `Acabo de añadir ${name} a mi bolsa. ¿Qué me recomiendas para combinarlo?`,
-  zh: (name) => `我剛把 ${name} 加入購物袋。有什麼可以搭配使用的？`,
-  ja: (name) => `${name} をバッグに追加しました。合わせるならどれがおすすめですか？`,
-  ko: (name) => `방금 ${name}을 장바구니에 담았어요. 함께 쓰면 좋은 제품을 추천해 주세요.`
+// Follow-up copy sent to the webhook as a synthetic user message after a click.
+// Two variants: 'added' when the click actually drops the item in the Shopify cart,
+// 'viewing' when the click just opens the product page.
+const productClickFollowUpPerLang = {
+  added: {
+    en: (name) => `I just added ${name} to my bag. What would you pair it with?`,
+    fr: (name) => `Je viens d'ajouter ${name} à mon panier. Que me recommandez-vous pour l'accompagner ?`,
+    es: (name) => `Acabo de añadir ${name} a mi bolsa. ¿Qué me recomiendas para combinarlo?`,
+    zh: (name) => `我剛把 ${name} 加入購物袋。有什麼可以搭配使用的？`,
+    ja: (name) => `${name} をバッグに追加しました。合わせるならどれがおすすめですか？`,
+    ko: (name) => `방금 ${name}을 장바구니에 담았어요. 함께 쓰면 좋은 제품을 추천해 주세요.`
+  },
+  viewing: {
+    en: (name) => `I'm checking out ${name}. What pairs well with it?`,
+    fr: (name) => `Je regarde ${name}. Qu'est-ce qui se marie bien avec ?`,
+    es: (name) => `Estoy mirando ${name}. ¿Qué combina bien con este producto?`,
+    zh: (name) => `我正在看 ${name}。有什麼適合搭配的產品？`,
+    ja: (name) => `${name} を見ています。相性のよい組み合わせは何ですか？`,
+    ko: (name) => `${name}을 살펴보고 있어요. 함께 쓰면 좋은 제품이 뭐가 있을까요?`
+  }
+};
+// Button label by mode and language
+const buttonLabelByMode = {
+  added: {
+    en: 'Add to Bag', fr: 'Ajouter au panier', es: 'Añadir a la bolsa',
+    zh: '加入購物袋', ja: 'バッグに追加', ko: '장바구니에 담기'
+  },
+  viewing: {
+    en: 'Shop This Product', fr: 'Voir le produit', es: 'Ver producto',
+    zh: '查看產品', ja: '商品を見る', ko: '제품 보기'
+  }
 };
 // Session break threshold: 2 minutes between messages shows a timestamp
 const SESSION_BREAK_MS = 2 * 60 * 1000;
@@ -613,9 +659,22 @@ function buildProductCard(card) {
     Object.keys(productNameToId).forEach(k => {
       window._normalizedProductMap[normalize(k)] = productNameToId[k];
     });
+    window._normalizedCartUrlMap = {};
+    Object.keys(productNameToCartUrl).forEach(k => {
+      window._normalizedCartUrlMap[normalize(k)] = productNameToCartUrl[k];
+    });
   }
   const cardProductId = window._normalizedProductMap[normalizedName] || productNameToId[card.name] || card.name;
   trackCardEvent('impression', cardProductId, card.name);
+  // Resolve link and mode:
+  //  1. If webhook provides card.cart_url, that's the real add-to-bag URL. Prefer it.
+  //  2. Otherwise try the local Shopify variant map.
+  //  3. Fall back to card.url (product page only). In that case the button is a "view" not an "add".
+  const cartUrlFromLocal = window._normalizedCartUrlMap[normalizedName] || productNameToCartUrl[card.name];
+  const resolvedCartUrl = card.cart_url || cartUrlFromLocal;
+  const linkUrl = resolvedCartUrl || card.url;
+  const mode = resolvedCartUrl ? 'added' : 'viewing';
+  const label = (buttonLabelByMode[mode][currentLang]) || buttonLabelByMode[mode].en;
   const div = document.createElement('div');
   div.className = 'product-card';
   const imgHtml = card.image
@@ -630,15 +689,17 @@ function buildProductCard(card) {
         <span class="product-card-price-label">Price</span>
         <span class="product-card-price">${card.price}</span>
       </div>
-      ${card.url ? `<a href="${card.url}" target="_blank" rel="noopener" class="product-card-btn">Add to Bag</a>` : ''}
+      ${linkUrl ? `<a href="${linkUrl}" target="_blank" rel="noopener" class="product-card-btn">${label}</a>` : ''}
     </div>
   `;
   const buyBtn = div.querySelector('.product-card-btn');
   if (buyBtn) {
     buyBtn.addEventListener('click', () => {
-      trackCardEvent('click', cardProductId, card.name);
-      // Close the upsell loop by nudging the conversation after the purchase moment
-      const builder = addToBagFollowUpPerLang[currentLang] || addToBagFollowUpPerLang.en;
+      trackCardEvent(mode === 'added' ? 'add_to_bag' : 'click', cardProductId, card.name);
+      // Close the upsell loop by nudging the conversation, with copy that matches
+      // what actually happened (real add vs. product view).
+      const builderSet = productClickFollowUpPerLang[mode];
+      const builder = (builderSet[currentLang]) || builderSet.en;
       const followUpText = builder(card.name);
       // Small delay so the new tab opens first, then the conversation continues
       setTimeout(() => handleSend(followUpText), 400);
