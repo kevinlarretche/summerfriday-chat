@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Summer Fridays Support</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,500;1,600&family=Pinyon+Script&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Pinyon+Script&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://use.typekit.net/ljq5ufs.css">
 <style>
   :root {
@@ -14,7 +14,7 @@
     --bg-elevated: #F3E7DB;
     --text-primary: #1C1512;
     --text-secondary: #7A6A5F;
-    --text-muted: #B8A89C;
+    --text-muted: #8A7A6E;
     --border: rgba(28,21,18,0.08);
     --border-hover: rgba(28,21,18,0.18);
     --accent: #E8A88E;
@@ -27,6 +27,7 @@
     --bubble-2: #F5D9C7;
     --bubble-3: #E8A88E;
     --bubble-4: #FFE8D9;
+    --focus-ring: rgba(214,143,115,0.55);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -38,6 +39,11 @@
     height: 100vh;
     overflow: hidden;
     -webkit-font-smoothing: antialiased;
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent-dark);
+    outline-offset: 2px;
+    border-radius: 6px;
   }
   .header {
     background: var(--bg-primary);
@@ -61,28 +67,40 @@
   }
   .brand-wordmark-svg path { fill: currentColor; }
   .brand-sub {
-    font-size: 9px; font-weight: 500; letter-spacing: 0.14em;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.14em;
     text-transform: uppercase; color: var(--text-secondary);
     display: flex; align-items: center; gap: 6px; line-height: 1; margin-top: 6px;
   }
-  .status-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--success); flex-shrink: 0; }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); flex-shrink: 0; }
   .header-actions { display: flex; align-items: center; gap: 4px; }
   .icon-btn {
     background: none; border: none; color: var(--text-secondary); cursor: pointer;
-    width: 36px; height: 36px; border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
+    min-width: 44px; height: 44px; padding: 0 10px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
     transition: all 0.15s ease;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
   }
   .icon-btn:hover { color: var(--text-primary); background: var(--accent-dim); }
+  .icon-btn .lang-current {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--text-primary);
+  }
   .chat-window {
     flex: 1; overflow-y: auto; padding: 32px 24px;
-    display: flex; flex-direction: column; gap: 24px;
+    display: flex; flex-direction: column; gap: 20px;
     scrollbar-width: thin; scrollbar-color: var(--bg-elevated) transparent;
     background: var(--bg-primary);
   }
   .chat-window::-webkit-scrollbar { width: 4px; }
   .chat-window::-webkit-scrollbar-track { background: transparent; }
   .chat-window::-webkit-scrollbar-thumb { background: var(--bg-elevated); border-radius: 2px; }
+  .session-break {
+    align-self: center;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--text-muted);
+    padding: 4px 12px;
+  }
   .message-wrapper { display: flex; flex-direction: column; animation: fadeUp 0.35s ease forwards; }
   .message-wrapper.user { align-items: flex-end; }
   .message-wrapper.bot { align-items: flex-start; }
@@ -91,8 +109,8 @@
     to { opacity: 1; transform: translateY(0); }
   }
   .bot-label {
-    font-size: 9px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
-    color: var(--text-muted); margin-bottom: 8px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--text-secondary); margin-bottom: 8px;
     display: flex; align-items: center; gap: 6px;
   }
   .bot-label::before { content: ''; display: block; width: 14px; height: 1px; background: var(--accent); }
@@ -116,7 +134,10 @@
   .message.bot p { margin-bottom: 8px; }
   .message.bot p:last-child { margin-bottom: 0; }
   .message.bot h3 { font-size: 13px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; margin: 10px 0 6px 0; color: var(--text-primary); }
-  .message-time { font-size: 9px; font-weight: 500; letter-spacing: 0.08em; color: var(--text-muted); margin-top: 6px; text-transform: uppercase; }
+  .message-time {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.08em;
+    color: var(--text-muted); margin-top: 6px; text-transform: uppercase;
+  }
   /* Summer Fridays product card */
   .product-card {
     margin-top: 12px; background: #fff;
@@ -154,7 +175,7 @@
   }
   .product-card-subtitle {
     font-family: "futura-pt", sans-serif;
-    font-size: 10px; font-weight: 400;
+    font-size: 11px; font-weight: 400;
     color: #5c7899; letter-spacing: 0.08em;
     text-transform: uppercase; margin-bottom: 10px;
   }
@@ -170,13 +191,15 @@
   }
   .product-card-btn {
     display: block; background: #000418; color: #fff; text-align: center;
-    padding: 11px 14px; border-radius: 0;
+    padding: 13px 14px; border-radius: 0;
     font-family: "futura-pt", sans-serif;
-    font-size: 10px; font-weight: 500;
+    font-size: 11px; font-weight: 500;
     letter-spacing: 0.2em; text-transform: uppercase;
     text-decoration: none;
     transition: background 0.25s ease, color 0.25s ease;
     border: 1px solid #000418;
+    min-height: 44px;
+    display: flex; align-items: center; justify-content: center;
   }
   .product-card-btn:hover { background: #fff; color: #000418; }
   #typing .message.bot { display: flex; gap: 5px; padding: 16px 18px; align-items: center; }
@@ -192,9 +215,11 @@
   .quick-replies::-webkit-scrollbar { display: none; }
   .qr-btn {
     background: transparent; border: 1px solid var(--border); color: var(--text-secondary);
-    padding: 8px 16px; border-radius: 20px; font-size: 11px; font-weight: 500;
+    padding: 0 18px; height: 44px; min-height: 44px; border-radius: 100px;
+    font-size: 12px; font-weight: 500;
     letter-spacing: 0.04em; cursor: pointer; white-space: nowrap;
     font-family: 'Inter', sans-serif; transition: all 0.15s ease;
+    display: inline-flex; align-items: center;
   }
   .qr-btn:hover { border-color: var(--accent); color: var(--text-primary); background: var(--accent-dim); }
   .input-wrapper {
@@ -207,7 +232,7 @@
   .input-wrapper input {
     flex: 1; background: transparent; border: none; outline: none;
     font-size: 14px; font-weight: 400; color: var(--text-primary);
-    font-family: 'Inter', sans-serif; letter-spacing: 0.01em; padding: 10px 0;
+    font-family: 'Inter', sans-serif; letter-spacing: 0.01em; padding: 12px 0;
   }
   .input-wrapper input::placeholder { color: var(--text-muted); }
   .send-btn-wrapper { position: relative; width: 44px; height: 44px; flex-shrink: 0; }
@@ -220,13 +245,16 @@
   }
   .send-btn:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(214,143,115,0.45); }
   .send-btn:active { transform: scale(0.95); }
-  .send-btn svg { transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
-  .send-btn:hover svg { transform: rotate(45deg); }
-  .send-btn-wrapper.bubbling .send-btn svg { animation: sunSpin 1s ease-out; }
-  @keyframes sunSpin {
-    0% { transform: rotate(0deg) scale(1); }
-    50% { transform: rotate(180deg) scale(1.15); }
-    100% { transform: rotate(360deg) scale(1); }
+  .send-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .send-btn svg { transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .send-btn:hover svg { transform: translate(2px, -2px); }
+  .send-btn-wrapper.bubbling .send-btn svg {
+    animation: sendLaunch 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @keyframes sendLaunch {
+    0% { transform: translate(0, 0) scale(1); }
+    40% { transform: translate(6px, -6px) scale(1.1); }
+    100% { transform: translate(0, 0) scale(1); }
   }
   .bubble {
     position: absolute;
@@ -267,32 +295,50 @@
     50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
     100% { opacity: 0; transform: scale(0.4) rotate(360deg); }
   }
-  .powered-by { text-align: center; font-size: 9px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-muted); margin-top: 14px; }
-  .powered-by a { color: var(--text-secondary); text-decoration: none; transition: color 0.25s ease; position: relative; font-weight: 700; }
+  .powered-by {
+    text-align: center; font-size: 11px; font-weight: 600;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--text-secondary); margin-top: 14px;
+  }
+  .powered-by a { color: var(--text-primary); text-decoration: none; transition: color 0.25s ease; position: relative; font-weight: 700; }
   .powered-by a::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px; background: var(--accent); transition: width 0.3s ease; }
-  .powered-by a:hover { color: var(--text-primary); }
+  .powered-by a:hover { color: var(--accent-dark); }
   .powered-by a:hover::after { width: 100%; }
   .lang-wrapper { position: relative; z-index: 100; }
   .lang-dropdown {
     position: absolute; top: calc(100% + 8px); right: 0;
     background: var(--bg-secondary); border: 1px solid var(--border-hover);
-    border-radius: 12px; overflow: hidden; min-width: 160px;
+    border-radius: 12px; overflow: hidden; min-width: 180px;
     opacity: 0; visibility: hidden; transform: translateY(-4px);
     transition: all 0.2s ease; z-index: 200; box-shadow: 0 8px 24px rgba(28,21,18,0.12);
+    padding: 6px;
   }
   .lang-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0); }
   .lang-option {
     display: flex; align-items: center; gap: 10px; width: 100%;
-    padding: 10px 14px; background: none; border: none;
+    padding: 10px 12px; background: none; border: none;
     color: var(--text-secondary); font-family: 'Inter', sans-serif;
-    font-size: 12px; font-weight: 500; letter-spacing: 0.04em;
+    font-size: 13px; font-weight: 500; letter-spacing: 0.02em;
     cursor: pointer; transition: all 0.15s ease; text-align: left;
+    border-radius: 8px; min-height: 44px;
   }
-  .lang-option:hover { background: var(--accent-dim); color: var(--text-primary); }
+  .lang-option:hover, .lang-option:focus-visible {
+    background: var(--accent-dim); color: var(--text-primary);
+  }
   .lang-option.active { color: var(--text-primary); font-weight: 600; }
-  .lang-option .lang-flag { font-size: 14px; line-height: 1; font-weight: 700; color: var(--accent-dark); }
-  .lang-option .lang-check { margin-left: auto; opacity: 0; font-size: 10px; color: var(--accent-dark); }
+  .lang-option .lang-flag {
+    font-size: 12px; line-height: 1; font-weight: 700;
+    color: var(--accent-dark); min-width: 24px;
+  }
+  .lang-option .lang-check { margin-left: auto; opacity: 0; font-size: 11px; color: var(--accent-dark); }
   .lang-option.active .lang-check { opacity: 1; }
+  /* Visually hidden helper for screen reader only content */
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
 </style>
 </head>
 <body>
@@ -317,9 +363,9 @@
             <path d="M339.5,53.4h-22.9v-16.9h22v-10.7h-22.1v-13.9h22.9V1.2h-35.3v62.9h35.3v-10.7h0Z"/>
             <path d="M372.5,38.9h1.6l17.2,25.2h15.3l-20.1-26.4c4-.7,6.1-1.8,8.6-3.6,3.7-3.1,6-8.6,6-14.1s-2.4-10.9-6.3-14.1c-3.6-2.9-9.2-4.4-16.3-4.4h-18.5v62.8h12.5v-25.2h0ZM372.5,11.1h3.9c7.9,0,12,3.2,12,9.4s-4.3,9.6-12.1,9.6h0c0,0-3.7,0-3.7,0V11.1h0Z"/>
           </svg>
-          <div class="brand-sub">
-            <span class="status-dot"></span>
-            Skin Concierge
+          <div class="brand-sub" aria-label="Skin Concierge, online">
+            <span class="status-dot" title="Online, replies in seconds"></span>
+            Skin Concierge &middot; Online
           </div>
         </div>
       </div>
@@ -327,52 +373,54 @@
   </div>
   <div class="header-actions">
     <div class="lang-wrapper">
-      <button class="icon-btn" id="lang-btn" title="Language">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <button class="icon-btn" id="lang-btn" title="Change language" aria-haspopup="listbox" aria-expanded="false" aria-label="Change language">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="10"/>
           <path d="M2 12h20"/>
           <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
         </svg>
+        <span class="lang-current" id="lang-current-label">EN</span>
       </button>
-      <div class="lang-dropdown" id="lang-dropdown">
-        <button class="lang-option active" data-lang="en" data-welcome="Welcome to Summer Fridays. I can help you pick the right products, answer ingredient questions, and build your perfect routine. What can I help with today?" data-placeholder="Ask about ingredients, routine, skin type...">
+      <div class="lang-dropdown" id="lang-dropdown" role="listbox" aria-label="Select language">
+        <button class="lang-option active" role="option" aria-selected="true" data-lang="en" data-code="EN" data-welcome="Welcome to Summer Fridays. I can help you pick the right products, answer ingredient questions, and build your perfect routine. What can I help with today?" data-placeholder="Ask about ingredients, routine, skin type...">
           <span class="lang-flag">EN</span> English
-          <span class="lang-check">&#10003;</span>
+          <span class="lang-check" aria-hidden="true">&#10003;</span>
         </button>
-        <button class="lang-option" data-lang="fr" data-welcome="Bienvenue chez Summer Fridays. Je suis là pour vous aider à trouver les bons produits, répondre à vos questions sur les ingrédients et créer votre routine idéale. Comment puis-je vous aider ?" data-placeholder="Ingrédients, routine, type de peau...">
+        <button class="lang-option" role="option" aria-selected="false" data-lang="fr" data-code="FR" data-welcome="Bienvenue chez Summer Fridays. Je suis là pour vous aider à trouver les bons produits, répondre à vos questions sur les ingrédients et créer votre routine idéale. Comment puis-je vous aider ?" data-placeholder="Ingrédients, routine, type de peau...">
           <span class="lang-flag">FR</span> Français
-          <span class="lang-check">&#10003;</span>
+          <span class="lang-check" aria-hidden="true">&#10003;</span>
         </button>
-        <button class="lang-option" data-lang="es" data-welcome="Bienvenido a Summer Fridays. Estoy aquí para ayudarte a elegir productos, resolver dudas sobre ingredientes y crear tu rutina ideal. ¿En qué puedo ayudarte hoy?" data-placeholder="Ingredientes, rutina, tipo de piel...">
+        <button class="lang-option" role="option" aria-selected="false" data-lang="es" data-code="ES" data-welcome="Bienvenido a Summer Fridays. Estoy aquí para ayudarte a elegir productos, resolver dudas sobre ingredientes y crear tu rutina ideal. ¿En qué puedo ayudarte hoy?" data-placeholder="Ingredientes, rutina, tipo de piel...">
           <span class="lang-flag">ES</span> Español
-          <span class="lang-check">&#10003;</span>
+          <span class="lang-check" aria-hidden="true">&#10003;</span>
         </button>
-        <button class="lang-option" data-lang="zh" data-welcome="歡迎來到 Summer Fridays。我可以協助您挑選產品、解答成分問題，並打造專屬護膚路線。今天有什麼能幫您的嗎？" data-placeholder="詢問成分、護膚路線、膚質...">
-          <span class="lang-flag">中</span> 中文
-          <span class="lang-check">&#10003;</span>
+        <button class="lang-option" role="option" aria-selected="false" data-lang="zh" data-code="ZH" data-welcome="歡迎來到 Summer Fridays。我可以協助您挑選產品、解答成分問題，並打造專屬護膚路線。今天有什麼能幫您的嗎？" data-placeholder="詢問成分、護膚路線、膚質...">
+          <span class="lang-flag">ZH</span> 中文
+          <span class="lang-check" aria-hidden="true">&#10003;</span>
         </button>
-        <button class="lang-option" data-lang="ja" data-welcome="Summer Fridays へようこそ。お肌に合う製品選び、成分のご質問、ルーティン作りまでお手伝いします。どのようなご相談ですか？" data-placeholder="成分、ルーティン、肌タイプについて...">
-          <span class="lang-flag">JP</span> 日本語
-          <span class="lang-check">&#10003;</span>
+        <button class="lang-option" role="option" aria-selected="false" data-lang="ja" data-code="JA" data-welcome="Summer Fridays へようこそ。お肌に合う製品選び、成分のご質問、ルーティン作りまでお手伝いします。どのようなご相談ですか？" data-placeholder="成分、ルーティン、肌タイプについて...">
+          <span class="lang-flag">JA</span> 日本語
+          <span class="lang-check" aria-hidden="true">&#10003;</span>
         </button>
-        <button class="lang-option" data-lang="ko" data-welcome="Summer Fridays에 오신 것을 환영합니다. 피부에 맞는 제품 추천, 성분 질문, 루틴 만들기를 도와드립니다. 무엇을 도와드릴까요?" data-placeholder="성분, 루틴, 피부 타입 질문...">
-          <span class="lang-flag">KR</span> 한국어
-          <span class="lang-check">&#10003;</span>
+        <button class="lang-option" role="option" aria-selected="false" data-lang="ko" data-code="KO" data-welcome="Summer Fridays에 오신 것을 환영합니다. 피부에 맞는 제품 추천, 성분 질문, 루틴 만들기를 도와드립니다. 무엇을 도와드릴까요?" data-placeholder="성분, 루틴, 피부 타입 질문...">
+          <span class="lang-flag">KO</span> 한국어
+          <span class="lang-check" aria-hidden="true">&#10003;</span>
         </button>
       </div>
     </div>
-    <button class="icon-btn" id="restart-btn" title="New conversation">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <button class="icon-btn" id="restart-btn" title="New conversation" aria-label="Start a new conversation">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
         <path d="M3 3v5h5"/>
       </svg>
     </button>
   </div>
 </div>
-<div class="chat-window" id="chat"></div>
+<div class="chat-window" id="chat" role="log" aria-live="polite" aria-relevant="additions" aria-label="Conversation with Summer Fridays Skin Concierge"></div>
 <div class="footer-container">
-  <div class="quick-replies" id="quick-replies"></div>
+  <div class="quick-replies" id="quick-replies" role="group" aria-label="Suggested questions"></div>
   <div class="input-wrapper">
+    <label for="input" class="sr-only">Type your message</label>
     <input type="text" id="input" placeholder="Ask about ingredients, routine, skin type..." autocomplete="off">
     <div class="send-btn-wrapper" id="send-wrapper">
       <span class="bubble b1"></span>
@@ -381,23 +429,15 @@
       <span class="bubble b4"></span>
       <span class="bubble b5"></span>
       <span class="bubble b6"></span>
-      <svg class="sparkle s1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg class="sparkle s1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5L12 2z" fill="#E8A88E"/>
       </svg>
-      <svg class="sparkle s2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg class="sparkle s2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5L12 2z" fill="#F5C7B0"/>
       </svg>
-      <button class="send-btn" id="send-btn" title="Send">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Send message">
-          <circle cx="12" cy="12" r="4.5" fill="white"/>
-          <path d="M12 2V4.5" stroke="white" stroke-width="2" stroke-linecap="round"/>
-          <path d="M12 19.5V22" stroke="white" stroke-width="2" stroke-linecap="round"/>
-          <path d="M2 12H4.5" stroke="white" stroke-width="2" stroke-linecap="round"/>
-          <path d="M19.5 12H22" stroke="white" stroke-width="2" stroke-linecap="round"/>
-          <path d="M4.93 4.93L6.7 6.7" stroke="white" stroke-width="2" stroke-linecap="round"/>
-          <path d="M17.3 17.3L19.07 19.07" stroke="white" stroke-width="2" stroke-linecap="round"/>
-          <path d="M4.93 19.07L6.7 17.3" stroke="white" stroke-width="2" stroke-linecap="round"/>
-          <path d="M17.3 6.7L19.07 4.93" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      <button class="send-btn" id="send-btn" title="Send" aria-label="Send message">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M4 12L20 4L13 20L11 13L4 12Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="white"/>
         </svg>
       </button>
     </div>
@@ -461,9 +501,23 @@ const questionsPerLang = {
   ja: ["肌タイプ", "成分", "朝のケア", "夜のケア", "ルーティン作成"],
   ko: ["피부 타입", "성분", "아침 루틴", "저녁 루틴", "루틴 추천"]
 };
+// Post-add-to-bag contextual follow-up (sent to webhook as a synthetic user message)
+const addToBagFollowUpPerLang = {
+  en: (name) => `I just added ${name} to my bag. What would you pair it with?`,
+  fr: (name) => `Je viens d'ajouter ${name} à mon panier. Que me recommandez-vous pour l'accompagner ?`,
+  es: (name) => `Acabo de añadir ${name} a mi bolsa. ¿Qué me recomiendas para combinarlo?`,
+  zh: (name) => `我剛把 ${name} 加入購物袋。有什麼可以搭配使用的？`,
+  ja: (name) => `${name} をバッグに追加しました。合わせるならどれがおすすめですか？`,
+  ko: (name) => `방금 ${name}을 장바구니에 담았어요. 함께 쓰면 좋은 제품을 추천해 주세요.`
+};
+// Session break threshold: 2 minutes between messages shows a timestamp
+const SESSION_BREAK_MS = 2 * 60 * 1000;
 let chatId = 'sf_' + Math.random().toString(36).substr(2, 9);
 let currentLang = 'en';
 let isSending = false;
+let lastMessageTime = 0;
+let lastMessageSender = null;
+let hasShownInitialBotLabel = false;
 function detectCountry() {
   try {
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
@@ -551,7 +605,7 @@ function buildProductCard(card) {
     'Summer Silk Nourishing Body Lotion':               { subtitle: 'Nourishing Body Lotion' },
   };
   const meta = productMeta[card.name] || { subtitle: '' };
-  // Normalize name for resilient lookup: strip ™ ® ©, lowercase, collapse whitespace
+  // Normalize name for resilient lookup: strip trademark marks, lowercase, collapse whitespace
   const normalize = s => (s || '').replace(/[™®©]/g, '').replace(/\s+/g, ' ').trim().toLowerCase();
   const normalizedName = normalize(card.name);
   if (!window._normalizedProductMap) {
@@ -583,15 +637,35 @@ function buildProductCard(card) {
   if (buyBtn) {
     buyBtn.addEventListener('click', () => {
       trackCardEvent('click', cardProductId, card.name);
+      // Close the upsell loop by nudging the conversation after the purchase moment
+      const builder = addToBagFollowUpPerLang[currentLang] || addToBagFollowUpPerLang.en;
+      const followUpText = builder(card.name);
+      // Small delay so the new tab opens first, then the conversation continues
+      setTimeout(() => handleSend(followUpText), 400);
     });
   }
   return div;
 }
+function shouldShowTimestamp() {
+  const now = Date.now();
+  if (lastMessageTime === 0) return true;
+  return (now - lastMessageTime) > SESSION_BREAK_MS;
+}
+function shouldShowBotLabel() {
+  // Show on the very first bot message of the session only.
+  // Users already know who they are talking to once we have labeled ourselves once.
+  if (!hasShownInitialBotLabel) {
+    hasShownInitialBotLabel = true;
+    return true;
+  }
+  return false;
+}
 function addMsg(text, type, card = null) {
+  const now = Date.now();
+  const showTimestamp = shouldShowTimestamp();
   const wrapper = document.createElement('div');
   wrapper.className = `message-wrapper ${type}`;
-  const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  if (type === 'bot') {
+  if (type === 'bot' && shouldShowBotLabel()) {
     const label = document.createElement('div');
     label.className = 'bot-label';
     label.textContent = 'Summer Fridays';
@@ -606,23 +680,24 @@ function addMsg(text, type, card = null) {
   }
   wrapper.appendChild(msgDiv);
   if (card) wrapper.appendChild(buildProductCard(card));
-  const timeDiv = document.createElement('div');
-  timeDiv.className = 'message-time';
-  timeDiv.textContent = time;
-  wrapper.appendChild(timeDiv);
+  if (showTimestamp) {
+    const timeDiv = document.createElement('div');
+    timeDiv.className = 'message-time';
+    timeDiv.textContent = new Date(now).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    wrapper.appendChild(timeDiv);
+  }
   chat.appendChild(wrapper);
   chat.scrollTop = chat.scrollHeight;
+  lastMessageTime = now;
+  lastMessageSender = type;
 }
 function showTyping() {
   const div = document.createElement('div');
   div.id = 'typing';
   div.className = 'message-wrapper bot';
-  const label = document.createElement('div');
-  label.className = 'bot-label';
-  label.textContent = 'Summer Fridays';
-  div.appendChild(label);
   const msg = document.createElement('div');
   msg.className = 'message bot';
+  msg.setAttribute('aria-label', 'Summer Fridays is typing');
   msg.innerHTML = '<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
   div.appendChild(msg);
   chat.appendChild(div);
@@ -664,6 +739,9 @@ async function handleSend(textOverride) {
 }
 function init() {
   chat.innerHTML = '';
+  lastMessageTime = 0;
+  lastMessageSender = null;
+  hasShownInitialBotLabel = false;
   addMsg(CONFIG.welcome, 'bot');
   const qr = document.getElementById('quick-replies');
   qr.innerHTML = '';
@@ -683,29 +761,76 @@ document.getElementById('restart-btn').onclick = () => {
   chatId = 'sf_' + Math.random().toString(36).substr(2, 9);
   init();
 };
+// Language dropdown with keyboard support
 const langBtn = document.getElementById('lang-btn');
 const langDropdown = document.getElementById('lang-dropdown');
+const langCurrentLabel = document.getElementById('lang-current-label');
+function openLangDropdown() {
+  langDropdown.classList.add('open');
+  langBtn.setAttribute('aria-expanded', 'true');
+  const firstOption = langDropdown.querySelector('.lang-option');
+  if (firstOption) firstOption.focus();
+}
+function closeLangDropdown() {
+  langDropdown.classList.remove('open');
+  langBtn.setAttribute('aria-expanded', 'false');
+}
 langBtn.onclick = (e) => {
   e.stopPropagation();
-  langDropdown.classList.toggle('open');
+  if (langDropdown.classList.contains('open')) {
+    closeLangDropdown();
+  } else {
+    openLangDropdown();
+  }
 };
 document.addEventListener('click', () => {
-  langDropdown.classList.remove('open');
+  closeLangDropdown();
 });
 langDropdown.addEventListener('click', (e) => {
   e.stopPropagation();
 });
+// Keyboard navigation for language dropdown
+langDropdown.addEventListener('keydown', (e) => {
+  const options = Array.from(langDropdown.querySelectorAll('.lang-option'));
+  const currentIndex = options.indexOf(document.activeElement);
+  if (e.key === 'Escape') {
+    e.preventDefault();
+    closeLangDropdown();
+    langBtn.focus();
+  } else if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    const next = options[(currentIndex + 1) % options.length];
+    if (next) next.focus();
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    const prev = options[(currentIndex - 1 + options.length) % options.length];
+    if (prev) prev.focus();
+  } else if (e.key === 'Home') {
+    e.preventDefault();
+    if (options[0]) options[0].focus();
+  } else if (e.key === 'End') {
+    e.preventDefault();
+    if (options[options.length - 1]) options[options.length - 1].focus();
+  }
+});
 document.querySelectorAll('.lang-option').forEach(opt => {
   opt.onclick = () => {
     const lang = opt.dataset.lang;
+    const code = opt.dataset.code;
     const welcome = opt.dataset.welcome;
     const placeholder = opt.dataset.placeholder;
     currentLang = lang;
-    document.querySelectorAll('.lang-option').forEach(o => o.classList.remove('active'));
+    document.querySelectorAll('.lang-option').forEach(o => {
+      o.classList.remove('active');
+      o.setAttribute('aria-selected', 'false');
+    });
     opt.classList.add('active');
+    opt.setAttribute('aria-selected', 'true');
     CONFIG.welcome = welcome;
     input.placeholder = placeholder;
-    langDropdown.classList.remove('open');
+    langCurrentLabel.textContent = code;
+    closeLangDropdown();
+    langBtn.focus();
     chatId = 'sf_' + Math.random().toString(36).substr(2, 9);
     init();
   };
