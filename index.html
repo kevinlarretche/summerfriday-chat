@@ -95,12 +95,6 @@
   .chat-window::-webkit-scrollbar { width: 4px; }
   .chat-window::-webkit-scrollbar-track { background: transparent; }
   .chat-window::-webkit-scrollbar-thumb { background: var(--bg-elevated); border-radius: 2px; }
-  .session-break {
-    align-self: center;
-    font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
-    text-transform: uppercase; color: var(--text-muted);
-    padding: 4px 12px;
-  }
   .message-wrapper { display: flex; flex-direction: column; animation: fadeUp 0.35s ease forwards; }
   .message-wrapper.user { align-items: flex-end; }
   .message-wrapper.bot { align-items: flex-start; }
@@ -138,7 +132,6 @@
     font-size: 11px; font-weight: 500; letter-spacing: 0.08em;
     color: var(--text-muted); margin-top: 6px; text-transform: uppercase;
   }
-  /* Summer Fridays product card */
   .product-card {
     margin-top: 12px; background: #fff;
     border-radius: 4px; overflow: hidden;
@@ -152,14 +145,12 @@
   .product-card-img {
     width: 100%; aspect-ratio: 1 / 1;
     display: flex; align-items: center; justify-content: center;
-    background: #ffffff; position: relative; padding: 0;
-    overflow: hidden;
+    background: #ffffff; position: relative; padding: 0; overflow: hidden;
   }
   .product-card-img img {
     width: 100%; height: 100%;
     object-fit: cover; object-position: center 40%;
-    transform: scale(1.4);
-    display: block;
+    transform: scale(1.4); display: block;
   }
   .product-card-img .placeholder {
     font-family: 'Pinyon Script', cursive, sans-serif;
@@ -180,121 +171,14 @@
     text-transform: uppercase; margin-bottom: 10px;
   }
   .product-card-price-row {
-    display: flex; align-items: baseline; justify-content: flex-end;
-    margin-bottom: 10px;
+    display: flex; align-items: baseline; justify-content: flex-end; margin-bottom: 10px;
   }
   .product-card-price-label { display: none; }
   .product-card-price {
     font-family: "futura-pt", sans-serif;
-    font-size: 15px; font-weight: 500;
-    color: #000418;
+    font-size: 15px; font-weight: 500; color: #000418;
   }
   .product-card-btn {
-    display: block; background: #000418; color: #fff; text-align: center;
-    padding: 13px 14px; border-radius: 0;
-    font-family: "futura-pt", sans-serif;
-    font-size: 11px; font-weight: 500;
-    letter-spacing: 0.2em; text-transform: uppercase;
-    text-decoration: none;
-    transition: background 0.25s ease, color 0.25s ease;
-    border: 1px solid #000418;
-    min-height: 44px;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .product-card-btn:hover { background: #fff; color: #000418; }
-  /* Routine card (multiple products, single Add to bag) */
-  .routine-card {
-    margin-top: 12px; background: #fff;
-    border-radius: 4px; overflow: hidden;
-    max-width: 320px; width: 100%;
-    border: 1px solid #EEEDEC;
-    font-family: "futura-pt", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-    color: #000418;
-    transition: box-shadow 0.25s ease;
-  }
-  .routine-card:hover { box-shadow: 0 6px 18px rgba(0,4,24,0.08); }
-  .routine-header {
-    padding: 14px 16px 10px;
-    border-bottom: 1px solid #F4F2F0;
-    display: flex; align-items: baseline; justify-content: space-between;
-  }
-  .routine-title {
-    font-family: "futura-pt", sans-serif;
-    font-size: 13px; font-weight: 500;
-    color: #000418; letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-  .routine-count {
-    font-family: "futura-pt", sans-serif;
-    font-size: 11px; font-weight: 400;
-    color: #5c7899; letter-spacing: 0.05em;
-  }
-  .routine-products {
-    padding: 6px 0;
-  }
-  .routine-product {
-    display: flex; align-items: center;
-    padding: 10px 16px;
-    border-bottom: 1px solid #F4F2F0;
-  }
-  .routine-product:last-child { border-bottom: none; }
-  .routine-product-step {
-    width: 22px; height: 22px;
-    border-radius: 50%;
-    background: #F4F2F0;
-    color: #5c7899;
-    font-size: 11px; font-weight: 500;
-    display: flex; align-items: center; justify-content: center;
-    margin-right: 12px;
-    flex-shrink: 0;
-  }
-  .routine-product-img {
-    width: 44px; height: 44px;
-    border-radius: 4px; overflow: hidden;
-    background: #fff; margin-right: 12px;
-    flex-shrink: 0;
-  }
-  .routine-product-img img {
-    width: 100%; height: 100%;
-    object-fit: cover; object-position: center 40%;
-    transform: scale(1.4);
-    display: block;
-  }
-  .routine-product-img .placeholder {
-    width: 100%; height: 100%;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Pinyon Script', cursive, sans-serif;
-    font-size: 18px; color: #5c7899;
-  }
-  .routine-product-body { flex: 1; min-width: 0; }
-  .routine-product-name {
-    font-size: 13px; font-weight: 500;
-    color: #000418; line-height: 1.25;
-    margin-bottom: 2px;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
-  .routine-product-price {
-    font-size: 12px; color: #5c7899;
-  }
-  .routine-footer {
-    padding: 12px 16px 14px;
-    background: #FAFAF9;
-    border-top: 1px solid #F4F2F0;
-  }
-  .routine-total {
-    display: flex; justify-content: space-between; align-items: baseline;
-    margin-bottom: 10px;
-  }
-  .routine-total-label {
-    font-size: 11px; font-weight: 500;
-    color: #5c7899; letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  .routine-total-value {
-    font-size: 16px; font-weight: 500;
-    color: #000418;
-  }
-  .routine-cta {
     display: flex; align-items: center; justify-content: center;
     background: #000418; color: #fff; text-align: center;
     padding: 13px 14px; border-radius: 0;
@@ -303,8 +187,74 @@
     letter-spacing: 0.2em; text-transform: uppercase;
     text-decoration: none;
     transition: background 0.25s ease, color 0.25s ease;
-    border: 1px solid #000418;
-    min-height: 44px;
+    border: 1px solid #000418; min-height: 44px;
+  }
+  .product-card-btn:hover { background: #fff; color: #000418; }
+  .routine-card {
+    margin-top: 12px; background: #fff;
+    border-radius: 4px; overflow: hidden;
+    max-width: 320px; width: 100%;
+    border: 1px solid #EEEDEC;
+    font-family: "futura-pt", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    color: #000418; transition: box-shadow 0.25s ease;
+  }
+  .routine-card:hover { box-shadow: 0 6px 18px rgba(0,4,24,0.08); }
+  .routine-header {
+    padding: 14px 16px 10px; border-bottom: 1px solid #F4F2F0;
+    display: flex; align-items: baseline; justify-content: space-between;
+  }
+  .routine-title {
+    font-family: "futura-pt", sans-serif; font-size: 13px; font-weight: 500;
+    color: #000418; letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .routine-count {
+    font-family: "futura-pt", sans-serif; font-size: 11px; font-weight: 400;
+    color: #5c7899; letter-spacing: 0.05em;
+  }
+  .routine-products { padding: 6px 0; }
+  .routine-product {
+    display: flex; align-items: center; padding: 10px 16px; border-bottom: 1px solid #F4F2F0;
+  }
+  .routine-product:last-child { border-bottom: none; }
+  .routine-product-step {
+    width: 22px; height: 22px; border-radius: 50%; background: #F4F2F0; color: #5c7899;
+    font-size: 11px; font-weight: 500; display: flex; align-items: center; justify-content: center;
+    margin-right: 12px; flex-shrink: 0;
+  }
+  .routine-product-img {
+    width: 44px; height: 44px; border-radius: 4px; overflow: hidden;
+    background: #fff; margin-right: 12px; flex-shrink: 0;
+  }
+  .routine-product-img img {
+    width: 100%; height: 100%; object-fit: cover; object-position: center 40%;
+    transform: scale(1.4); display: block;
+  }
+  .routine-product-img .placeholder {
+    width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+    font-family: 'Pinyon Script', cursive, sans-serif; font-size: 18px; color: #5c7899;
+  }
+  .routine-product-body { flex: 1; min-width: 0; }
+  .routine-product-name {
+    font-size: 13px; font-weight: 500; color: #000418; line-height: 1.25;
+    margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .routine-product-price { font-size: 12px; color: #5c7899; }
+  .routine-footer { padding: 12px 16px 14px; background: #FAFAF9; border-top: 1px solid #F4F2F0; }
+  .routine-total {
+    display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px;
+  }
+  .routine-total-label {
+    font-size: 11px; font-weight: 500; color: #5c7899; letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .routine-total-value { font-size: 16px; font-weight: 500; color: #000418; }
+  .routine-cta {
+    display: flex; align-items: center; justify-content: center;
+    background: #000418; color: #fff; text-align: center;
+    padding: 13px 14px; border-radius: 0;
+    font-family: "futura-pt", sans-serif; font-size: 11px; font-weight: 500;
+    letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none;
+    transition: background 0.25s ease, color 0.25s ease;
+    border: 1px solid #000418; min-height: 44px;
   }
   .routine-cta:hover { background: #fff; color: #000418; }
   #typing .message.bot { display: flex; gap: 5px; padding: 16px 18px; align-items: center; }
@@ -321,10 +271,8 @@
   .qr-btn {
     background: transparent; border: 1px solid var(--border); color: var(--text-secondary);
     padding: 0 18px; height: 44px; min-height: 44px; border-radius: 100px;
-    font-size: 12px; font-weight: 500;
-    letter-spacing: 0.04em; cursor: pointer; white-space: nowrap;
-    font-family: 'Inter', sans-serif; transition: all 0.15s ease;
-    display: inline-flex; align-items: center;
+    font-size: 12px; font-weight: 500; letter-spacing: 0.04em; cursor: pointer; white-space: nowrap;
+    font-family: 'Inter', sans-serif; transition: all 0.15s ease; display: inline-flex; align-items: center;
   }
   .qr-btn:hover { border-color: var(--accent); color: var(--text-primary); background: var(--accent-dim); }
   .input-wrapper {
@@ -353,24 +301,14 @@
   .send-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
   .send-btn svg { transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
   .send-btn:hover svg { transform: translate(2px, -2px); }
-  .send-btn-wrapper.bubbling .send-btn svg {
-    animation: sendLaunch 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-  }
+  .send-btn-wrapper.bubbling .send-btn svg { animation: sendLaunch 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
   @keyframes sendLaunch {
     0% { transform: translate(0, 0) scale(1); }
     40% { transform: translate(6px, -6px) scale(1.1); }
     100% { transform: translate(0, 0) scale(1); }
   }
-  .bubble {
-    position: absolute;
-    border-radius: 50%;
-    pointer-events: none;
-    opacity: 0;
-    z-index: 1;
-  }
-  .send-btn-wrapper.bubbling .bubble {
-    animation: bubbleUp 1.1s ease-out forwards;
-  }
+  .bubble { position: absolute; border-radius: 50%; pointer-events: none; opacity: 0; z-index: 1; }
+  .send-btn-wrapper.bubbling .bubble { animation: bubbleUp 1.1s ease-out forwards; }
   .send-btn-wrapper.bubbling .bubble.b1 { width: 8px; height: 8px; background: var(--bubble-1); left: 18px; top: 14px; animation-delay: 0.02s; --drift: -18px; }
   .send-btn-wrapper.bubbling .bubble.b2 { width: 6px; height: 6px; background: var(--bubble-2); left: 22px; top: 18px; animation-delay: 0.12s; --drift: 14px; }
   .send-btn-wrapper.bubbling .bubble.b3 { width: 10px; height: 10px; background: var(--bubble-3); left: 14px; top: 16px; animation-delay: 0.06s; --drift: -8px; }
@@ -382,17 +320,8 @@
     15% { opacity: 1; transform: translateY(-8px) translateX(calc(var(--drift) * 0.2)) scale(1); }
     100% { opacity: 0; transform: translateY(-60px) translateX(var(--drift)) scale(1.2); }
   }
-  .sparkle {
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    pointer-events: none;
-    opacity: 0;
-    z-index: 3;
-  }
-  .send-btn-wrapper.bubbling .sparkle {
-    animation: sparklePop 0.9s ease-out forwards;
-  }
+  .sparkle { position: absolute; width: 12px; height: 12px; pointer-events: none; opacity: 0; z-index: 3; }
+  .send-btn-wrapper.bubbling .sparkle { animation: sparklePop 0.9s ease-out forwards; }
   .send-btn-wrapper.bubbling .sparkle.s1 { top: -2px; right: 2px; animation-delay: 0s; }
   .send-btn-wrapper.bubbling .sparkle.s2 { bottom: 2px; left: -4px; animation-delay: 0.1s; }
   @keyframes sparklePop {
@@ -415,8 +344,7 @@
     background: var(--bg-secondary); border: 1px solid var(--border-hover);
     border-radius: 12px; overflow: hidden; min-width: 180px;
     opacity: 0; visibility: hidden; transform: translateY(-4px);
-    transition: all 0.2s ease; z-index: 200; box-shadow: 0 8px 24px rgba(28,21,18,0.12);
-    padding: 6px;
+    transition: all 0.2s ease; z-index: 200; box-shadow: 0 8px 24px rgba(28,21,18,0.12); padding: 6px;
   }
   .lang-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0); }
   .lang-option {
@@ -424,23 +352,15 @@
     padding: 10px 12px; background: none; border: none;
     color: var(--text-secondary); font-family: 'Inter', sans-serif;
     font-size: 13px; font-weight: 500; letter-spacing: 0.02em;
-    cursor: pointer; transition: all 0.15s ease; text-align: left;
-    border-radius: 8px; min-height: 44px;
+    cursor: pointer; transition: all 0.15s ease; text-align: left; border-radius: 8px; min-height: 44px;
   }
-  .lang-option:hover, .lang-option:focus-visible {
-    background: var(--accent-dim); color: var(--text-primary);
-  }
+  .lang-option:hover, .lang-option:focus-visible { background: var(--accent-dim); color: var(--text-primary); }
   .lang-option.active { color: var(--text-primary); font-weight: 600; }
-  .lang-option .lang-flag {
-    font-size: 12px; line-height: 1; font-weight: 700;
-    color: var(--accent-dark); min-width: 24px;
-  }
+  .lang-option .lang-flag { font-size: 12px; line-height: 1; font-weight: 700; color: var(--accent-dark); min-width: 24px; }
   .lang-option .lang-check { margin-left: auto; opacity: 0; font-size: 11px; color: var(--accent-dark); }
   .lang-option.active .lang-check { opacity: 1; }
-  /* Visually hidden helper for screen reader only content */
   .sr-only {
-    position: absolute;
-    width: 1px; height: 1px;
+    position: absolute; width: 1px; height: 1px;
     padding: 0; margin: -1px; overflow: hidden;
     clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
   }
@@ -552,6 +472,7 @@
 <script>
 const SUPABASE_URL = 'https://sygsovgnxlrsdqzwhdyc.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_EVCnH60x4JDU1Qlk5uZqBw_i3fmjTan';
+
 const productNameToId = {
   'Jet Lag Mask + Moisturizer': 'SF-JLM',
   'Jet Lag Deep Hydration Serum': 'SF-JDS',
@@ -571,10 +492,7 @@ const productNameToId = {
   'Lip Butter Balm': 'SF-LBB',
   'Summer Silk Nourishing Body Lotion': 'SF-SNL'
 };
-// Shopify variant IDs scraped from summerfridays.com/products.json.
-// These power a real one-click add-to-bag: clicking the URL adds the item
-// to the visitor's Shopify cart and lands them on the cart page.
-// If the n8n webhook returns card.cart_url, that takes precedence over this map.
+
 const productNameToCartUrl = {
   'Jet Lag Mask + Moisturizer':                    'https://summerfridays.com/cart/add?id=40139555897421&quantity=1&return_to=/cart',
   'Jet Lag Deep Hydration Serum':                  'https://summerfridays.com/cart/add?id=41208029347917&quantity=1&return_to=/cart',
@@ -594,6 +512,7 @@ const productNameToCartUrl = {
   'Lip Butter Balm':                               'https://summerfridays.com/cart/add?id=39408922853453&quantity=1&return_to=/cart',
   'Summer Silk Nourishing Body Lotion':            'https://summerfridays.com/cart/add?id=39687368245325&quantity=1&return_to=/cart'
 };
+
 async function trackCardEvent(eventType, cardProductId, cardProductName) {
   try {
     await fetch(`${SUPABASE_URL}/rest/v1/product_card_events_sf`, {
@@ -613,14 +532,17 @@ async function trackCardEvent(eventType, cardProductId, cardProductName) {
     });
   } catch(e) { /* fail silently */ }
 }
+
 const params = new URLSearchParams(window.location.search);
 const productId = params.get('product') || 'SF-JLM';
+
 const CONFIG = {
   bot: "Summer Fridays",
   webhook: "https://n8n.srv1208833.hstgr.cloud/webhook/summer_fridays_chat",
   welcome: "Welcome to Summer Fridays. I can help you pick the right products, answer ingredient questions, and build your perfect routine. What can I help with today?",
   questions: ["My skin type", "Ingredients", "AM routine", "PM routine", "Build my routine"]
 };
+
 const questionsPerLang = {
   en: ["My skin type", "Ingredients", "AM routine", "PM routine", "Build my routine"],
   fr: ["Mon type de peau", "Ingrédients", "Routine matin", "Routine soir", "Créer ma routine"],
@@ -629,9 +551,7 @@ const questionsPerLang = {
   ja: ["肌タイプ", "成分", "朝のケア", "夜のケア", "ルーティン作成"],
   ko: ["피부 타입", "성분", "아침 루틴", "저녁 루틴", "루틴 추천"]
 };
-// Static confirmation copy shown in the chat after a product-card click.
-// Displayed as a bot message, no webhook call, no AI round-trip.
-// 'added' when the click drops the item in the Shopify cart, 'viewing' when it only opens the product page.
+
 const productClickFollowUpPerLang = {
   added: {
     en: (name) => `Added ${name} to your bag. Let me know if you'd like help with anything else.`,
@@ -650,7 +570,7 @@ const productClickFollowUpPerLang = {
     ko: (name) => `${name}을 새 탭에서 열었어요. 궁금한 점이 있으면 알려주세요.`
   }
 };
-// Routine card localization (title, total, CTA, product count label)
+
 const routineStrings = {
   en: { title: 'Your routine', total: 'Total', addAll: 'Add routine to bag', countLabel: (n) => `${n} products` },
   fr: { title: 'Votre routine', total: 'Total', addAll: 'Ajouter la routine au panier', countLabel: (n) => `${n} produits` },
@@ -659,7 +579,7 @@ const routineStrings = {
   ja: { title: 'あなたのルーティン', total: '合計', addAll: 'ルーティンをバッグに追加', countLabel: (n) => `${n} 商品` },
   ko: { title: '나의 루틴', total: '합계', addAll: '전체 장바구니에 담기', countLabel: (n) => `${n}개 제품` }
 };
-// Confirmation shown in chat after clicking "Add routine to bag"
+
 const routineAddedConfirmation = {
   en: (n) => `Added ${n} products to your bag. Let me know if you'd like help with anything else.`,
   fr: (n) => `${n} produits ajoutés à votre panier. Dites-moi si vous avez besoin d'autre chose.`,
@@ -668,7 +588,7 @@ const routineAddedConfirmation = {
   ja: (n) => `${n} 商品をバッグに追加しました。他にもお手伝いできることがあればお知らせください。`,
   ko: (n) => `${n}개 제품을 장바구니에 담았어요. 더 도와드릴 일이 있으면 알려주세요.`
 };
-// Button label by mode and language
+
 const buttonLabelByMode = {
   added: {
     en: 'Add to Bag', fr: 'Ajouter au panier', es: 'Añadir a la bolsa',
@@ -679,14 +599,17 @@ const buttonLabelByMode = {
     zh: '查看產品', ja: '商品を見る', ko: '제품 보기'
   }
 };
-// Session break threshold: 2 minutes between messages shows a timestamp
+
 const SESSION_BREAK_MS = 2 * 60 * 1000;
+const FETCH_TIMEOUT_MS = 45000;
+
 let chatId = 'sf_' + Math.random().toString(36).substr(2, 9);
 let currentLang = 'en';
 let isSending = false;
 let lastMessageTime = 0;
 let lastMessageSender = null;
 let hasShownInitialBotLabel = false;
+
 function detectCountry() {
   try {
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
@@ -707,10 +630,9 @@ function detectCountry() {
       'Pacific/Auckland': 'NZ',
     };
     return tzCountry[tz] || regionFromLocale.toUpperCase() || 'US';
-  } catch(e) {
-    return 'US';
-  }
+  } catch(e) { return 'US'; }
 }
+
 function getCurrency(country) {
   const map = {
     'US': 'USD', 'CA': 'CAD', 'GB': 'GBP',
@@ -722,17 +644,20 @@ function getCurrency(country) {
   };
   return map[country] || 'USD';
 }
+
 const userCountry = detectCountry();
 const userCurrency = getCurrency(userCountry);
 const chat = document.getElementById('chat');
 const input = document.getElementById('input');
 const sendWrapper = document.getElementById('send-wrapper');
+
 function triggerBubbles() {
   sendWrapper.classList.remove('bubbling');
   void sendWrapper.offsetWidth;
   sendWrapper.classList.add('bubbling');
   setTimeout(() => sendWrapper.classList.remove('bubbling'), 1200);
 }
+
 function parseMarkdown(text) {
   let html = text
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -753,6 +678,7 @@ function parseMarkdown(text) {
     return `<p>${t}</p>`;
   }).filter(Boolean).join('\n');
 }
+
 function buildProductCard(card) {
   const productMeta = {
     'Jet Lag Mask + Moisturizer':                       { subtitle: 'Hydrating Mask + Moisturizer' },
@@ -774,30 +700,21 @@ function buildProductCard(card) {
     'Summer Silk Nourishing Body Lotion':               { subtitle: 'Nourishing Body Lotion' },
   };
   const meta = productMeta[card.name] || { subtitle: '' };
-  // Normalize name for resilient lookup: strip trademark marks, lowercase, collapse whitespace
   const normalize = s => (s || '').replace(/[™®©]/g, '').replace(/\s+/g, ' ').trim().toLowerCase();
   const normalizedName = normalize(card.name);
   if (!window._normalizedProductMap) {
     window._normalizedProductMap = {};
-    Object.keys(productNameToId).forEach(k => {
-      window._normalizedProductMap[normalize(k)] = productNameToId[k];
-    });
+    Object.keys(productNameToId).forEach(k => { window._normalizedProductMap[normalize(k)] = productNameToId[k]; });
     window._normalizedCartUrlMap = {};
-    Object.keys(productNameToCartUrl).forEach(k => {
-      window._normalizedCartUrlMap[normalize(k)] = productNameToCartUrl[k];
-    });
+    Object.keys(productNameToCartUrl).forEach(k => { window._normalizedCartUrlMap[normalize(k)] = productNameToCartUrl[k]; });
   }
   const cardProductId = window._normalizedProductMap[normalizedName] || productNameToId[card.name] || card.name;
   trackCardEvent('impression', cardProductId, card.name);
-  // Resolve link and mode:
-  //  1. If webhook provides card.cart_url, that's the real add-to-bag URL. Prefer it.
-  //  2. Otherwise try the local Shopify variant map.
-  //  3. Fall back to card.url (product page only). In that case the button is a "view" not an "add".
   const cartUrlFromLocal = window._normalizedCartUrlMap[normalizedName] || productNameToCartUrl[card.name];
   const resolvedCartUrl = card.cart_url || cartUrlFromLocal;
   const linkUrl = resolvedCartUrl || card.url;
   const mode = resolvedCartUrl ? 'added' : 'viewing';
-  const label = (buttonLabelByMode[mode][currentLang]) || buttonLabelByMode[mode].en;
+  const label = buttonLabelByMode[mode][currentLang] || buttonLabelByMode[mode].en;
   const div = document.createElement('div');
   div.className = 'product-card';
   const imgHtml = card.image
@@ -819,23 +736,16 @@ function buildProductCard(card) {
   if (buyBtn) {
     buyBtn.addEventListener('click', () => {
       trackCardEvent(mode === 'added' ? 'add_to_bag' : 'click', cardProductId, card.name);
-      // Acknowledge the click with a local bot message instead of triggering
-      // another AI round-trip. Keeps the UX calm and non-pushy.
       const builderSet = productClickFollowUpPerLang[mode];
-      const builder = (builderSet[currentLang]) || builderSet.en;
-      const confirmationText = builder(card.name);
-      // Small delay so the new tab opens first, then the confirmation appears.
-      setTimeout(() => addMsg(confirmationText, 'bot'), 400);
+      const builder = builderSet[currentLang] || builderSet.en;
+      setTimeout(() => addMsg(builder(card.name), 'bot'), 400);
     });
   }
   return div;
 }
-// Calculate routine total from a list of product objects with price strings like "$49" or "$44 USD".
-// Assumes all products share the same currency symbol within a single session.
+
 function calculateRoutineTotal(products) {
-  let total = 0;
-  let symbol = '$';
-  let suffix = '';
+  let total = 0, symbol = '$', suffix = '';
   for (const p of products) {
     if (!p.price) continue;
     const match = String(p.price).match(/^\s*([^\d.,\s])?\s*([\d.,]+)(?:\s*([A-Z]{3}))?/);
@@ -846,21 +756,17 @@ function calculateRoutineTotal(products) {
     }
   }
   if (!total) return '';
-  // Keep integer formatting when total is whole
   const totalStr = total % 1 === 0 ? total.toFixed(0) : total.toFixed(2);
   return `${symbol}${totalStr}${suffix ? ' ' + suffix : ''}`;
 }
+
 function buildRoutineCard(routine) {
   const products = (routine && routine.products) || [];
-  if (products.length === 0) {
-    const empty = document.createElement('div');
-    return empty;
-  }
+  if (products.length === 0) return document.createElement('div');
   const strings = routineStrings[currentLang] || routineStrings.en;
   const total = calculateRoutineTotal(products);
   const div = document.createElement('div');
   div.className = 'routine-card';
-  // Track impression for each product in the routine
   products.forEach(p => {
     const pid = p.product_id || productNameToId[p.name] || p.name;
     trackCardEvent('routine_impression', pid, p.name);
@@ -877,8 +783,7 @@ function buildRoutineCard(routine) {
           <div class="routine-product-name">${p.name}</div>
           <div class="routine-product-price">${p.price || ''}</div>
         </div>
-      </div>
-    `;
+      </div>`;
   }).join('');
   div.innerHTML = `
     <div class="routine-header">
@@ -887,46 +792,35 @@ function buildRoutineCard(routine) {
     </div>
     <div class="routine-products">${productsHtml}</div>
     <div class="routine-footer">
-      ${total ? `
-        <div class="routine-total">
-          <span class="routine-total-label">${strings.total}</span>
-          <span class="routine-total-value">${total}</span>
-        </div>
-      ` : ''}
-      ${routine.bundle_cart_url ? `
-        <a href="${routine.bundle_cart_url}" target="_blank" rel="noopener" class="routine-cta">${strings.addAll}</a>
-      ` : ''}
+      ${total ? `<div class="routine-total"><span class="routine-total-label">${strings.total}</span><span class="routine-total-value">${total}</span></div>` : ''}
+      ${routine.bundle_cart_url ? `<a href="${routine.bundle_cart_url}" target="_blank" rel="noopener" class="routine-cta">${strings.addAll}</a>` : ''}
     </div>
   `;
   const bundleBtn = div.querySelector('.routine-cta');
   if (bundleBtn) {
     bundleBtn.addEventListener('click', () => {
-      // Track bundle add for each product
       products.forEach(p => {
         const pid = p.product_id || productNameToId[p.name] || p.name;
         trackCardEvent('routine_add_to_bag', pid, p.name);
       });
       const builder = routineAddedConfirmation[currentLang] || routineAddedConfirmation.en;
-      const confirmationText = builder(products.length);
-      setTimeout(() => addMsg(confirmationText, 'bot'), 400);
+      setTimeout(() => addMsg(builder(products.length), 'bot'), 400);
     });
   }
   return div;
 }
+
 function shouldShowTimestamp() {
   const now = Date.now();
   if (lastMessageTime === 0) return true;
   return (now - lastMessageTime) > SESSION_BREAK_MS;
 }
+
 function shouldShowBotLabel() {
-  // Show on the very first bot message of the session only.
-  // Users already know who they are talking to once we have labeled ourselves once.
-  if (!hasShownInitialBotLabel) {
-    hasShownInitialBotLabel = true;
-    return true;
-  }
+  if (!hasShownInitialBotLabel) { hasShownInitialBotLabel = true; return true; }
   return false;
 }
+
 function addMsg(text, type, card = null, routineCard = null) {
   const now = Date.now();
   const showTimestamp = shouldShowTimestamp();
@@ -940,13 +834,9 @@ function addMsg(text, type, card = null, routineCard = null) {
   }
   const msgDiv = document.createElement('div');
   msgDiv.className = `message ${type}`;
-  if (type === 'bot') {
-    msgDiv.innerHTML = parseMarkdown(text);
-  } else {
-    msgDiv.textContent = text;
-  }
+  msgDiv.innerHTML = type === 'bot' ? parseMarkdown(text) : '';
+  if (type !== 'bot') msgDiv.textContent = text;
   wrapper.appendChild(msgDiv);
-  // Routine card takes priority over single product card when both are present
   if (routineCard && routineCard.products && routineCard.products.length > 0) {
     wrapper.appendChild(buildRoutineCard(routineCard));
   } else if (card) {
@@ -963,6 +853,7 @@ function addMsg(text, type, card = null, routineCard = null) {
   lastMessageTime = now;
   lastMessageSender = type;
 }
+
 function showTyping() {
   const div = document.createElement('div');
   div.id = 'typing';
@@ -975,6 +866,12 @@ function showTyping() {
   chat.appendChild(div);
   chat.scrollTop = chat.scrollHeight;
 }
+
+function removeTyping() {
+  const el = document.getElementById('typing');
+  if (el) el.remove();
+}
+
 async function handleSend(textOverride) {
   const text = textOverride || input.value.trim();
   if (!text || isSending) return;
@@ -986,14 +883,27 @@ async function handleSend(textOverride) {
   triggerBubbles();
   addMsg(text, 'user');
   showTyping();
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+
   try {
     const res = await fetch(CONFIG.webhook, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: text, productId, chatId, language: currentLang, country: userCountry, currency: userCurrency })
+      signal: controller.signal,
+      body: JSON.stringify({
+        message: text,
+        productId,
+        chatId,
+        language: currentLang,
+        country: userCountry,
+        currency: userCurrency
+      })
     });
+    clearTimeout(timeoutId);
     const data = await res.json();
-    if (document.getElementById('typing')) document.getElementById('typing').remove();
+    removeTyping();
     addMsg(
       data.reply || "I'm having trouble connecting. Please try again.",
       'bot',
@@ -1001,8 +911,13 @@ async function handleSend(textOverride) {
       data.routine_card || null
     );
   } catch(e) {
-    if (document.getElementById('typing')) document.getElementById('typing').remove();
-    addMsg("Connection issue. Please check your network and try again.", 'bot');
+    clearTimeout(timeoutId);
+    removeTyping();
+    if (e.name === 'AbortError') {
+      addMsg("This is taking a little longer than usual. Please try again in a moment.", 'bot');
+    } else {
+      addMsg("Connection issue. Please check your network and try again.", 'bot');
+    }
   } finally {
     isSending = false;
     input.disabled = false;
@@ -1010,6 +925,7 @@ async function handleSend(textOverride) {
     input.focus();
   }
 }
+
 function init() {
   chat.innerHTML = '';
   lastMessageTime = 0;
@@ -1028,86 +944,67 @@ function init() {
     qr.appendChild(b);
   });
 }
+
 document.getElementById('send-btn').onclick = () => handleSend();
 input.onkeypress = e => { if (e.key === 'Enter') handleSend(); };
 document.getElementById('restart-btn').onclick = () => {
   chatId = 'sf_' + Math.random().toString(36).substr(2, 9);
   init();
 };
-// Language dropdown with keyboard support
+
 const langBtn = document.getElementById('lang-btn');
 const langDropdown = document.getElementById('lang-dropdown');
 const langCurrentLabel = document.getElementById('lang-current-label');
+
 function openLangDropdown() {
   langDropdown.classList.add('open');
   langBtn.setAttribute('aria-expanded', 'true');
   const firstOption = langDropdown.querySelector('.lang-option');
   if (firstOption) firstOption.focus();
 }
+
 function closeLangDropdown() {
   langDropdown.classList.remove('open');
   langBtn.setAttribute('aria-expanded', 'false');
 }
+
 langBtn.onclick = (e) => {
   e.stopPropagation();
-  if (langDropdown.classList.contains('open')) {
-    closeLangDropdown();
-  } else {
-    openLangDropdown();
-  }
+  langDropdown.classList.contains('open') ? closeLangDropdown() : openLangDropdown();
 };
-document.addEventListener('click', () => {
-  closeLangDropdown();
-});
-langDropdown.addEventListener('click', (e) => {
-  e.stopPropagation();
-});
-// Keyboard navigation for language dropdown
+
+document.addEventListener('click', () => closeLangDropdown());
+langDropdown.addEventListener('click', (e) => e.stopPropagation());
+
 langDropdown.addEventListener('keydown', (e) => {
   const options = Array.from(langDropdown.querySelectorAll('.lang-option'));
-  const currentIndex = options.indexOf(document.activeElement);
-  if (e.key === 'Escape') {
-    e.preventDefault();
-    closeLangDropdown();
-    langBtn.focus();
-  } else if (e.key === 'ArrowDown') {
-    e.preventDefault();
-    const next = options[(currentIndex + 1) % options.length];
-    if (next) next.focus();
-  } else if (e.key === 'ArrowUp') {
-    e.preventDefault();
-    const prev = options[(currentIndex - 1 + options.length) % options.length];
-    if (prev) prev.focus();
-  } else if (e.key === 'Home') {
-    e.preventDefault();
-    if (options[0]) options[0].focus();
-  } else if (e.key === 'End') {
-    e.preventDefault();
-    if (options[options.length - 1]) options[options.length - 1].focus();
-  }
+  const idx = options.indexOf(document.activeElement);
+  if (e.key === 'Escape') { e.preventDefault(); closeLangDropdown(); langBtn.focus(); }
+  else if (e.key === 'ArrowDown') { e.preventDefault(); options[(idx + 1) % options.length]?.focus(); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); options[(idx - 1 + options.length) % options.length]?.focus(); }
+  else if (e.key === 'Home') { e.preventDefault(); options[0]?.focus(); }
+  else if (e.key === 'End') { e.preventDefault(); options[options.length - 1]?.focus(); }
 });
+
 document.querySelectorAll('.lang-option').forEach(opt => {
   opt.onclick = () => {
-    const lang = opt.dataset.lang;
-    const code = opt.dataset.code;
-    const welcome = opt.dataset.welcome;
-    const placeholder = opt.dataset.placeholder;
-    currentLang = lang;
+    currentLang = opt.dataset.lang;
     document.querySelectorAll('.lang-option').forEach(o => {
       o.classList.remove('active');
       o.setAttribute('aria-selected', 'false');
     });
     opt.classList.add('active');
     opt.setAttribute('aria-selected', 'true');
-    CONFIG.welcome = welcome;
-    input.placeholder = placeholder;
-    langCurrentLabel.textContent = code;
+    CONFIG.welcome = opt.dataset.welcome;
+    input.placeholder = opt.dataset.placeholder;
+    langCurrentLabel.textContent = opt.dataset.code;
     closeLangDropdown();
     langBtn.focus();
     chatId = 'sf_' + Math.random().toString(36).substr(2, 9);
     init();
   };
 });
+
 init();
 </script>
 </body>
