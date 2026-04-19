@@ -202,6 +202,111 @@
     display: flex; align-items: center; justify-content: center;
   }
   .product-card-btn:hover { background: #fff; color: #000418; }
+  /* Routine card (multiple products, single Add to bag) */
+  .routine-card {
+    margin-top: 12px; background: #fff;
+    border-radius: 4px; overflow: hidden;
+    max-width: 320px; width: 100%;
+    border: 1px solid #EEEDEC;
+    font-family: "futura-pt", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    color: #000418;
+    transition: box-shadow 0.25s ease;
+  }
+  .routine-card:hover { box-shadow: 0 6px 18px rgba(0,4,24,0.08); }
+  .routine-header {
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid #F4F2F0;
+    display: flex; align-items: baseline; justify-content: space-between;
+  }
+  .routine-title {
+    font-family: "futura-pt", sans-serif;
+    font-size: 13px; font-weight: 500;
+    color: #000418; letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .routine-count {
+    font-family: "futura-pt", sans-serif;
+    font-size: 11px; font-weight: 400;
+    color: #5c7899; letter-spacing: 0.05em;
+  }
+  .routine-products {
+    padding: 6px 0;
+  }
+  .routine-product {
+    display: flex; align-items: center;
+    padding: 10px 16px;
+    border-bottom: 1px solid #F4F2F0;
+  }
+  .routine-product:last-child { border-bottom: none; }
+  .routine-product-step {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: #F4F2F0;
+    color: #5c7899;
+    font-size: 11px; font-weight: 500;
+    display: flex; align-items: center; justify-content: center;
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+  .routine-product-img {
+    width: 44px; height: 44px;
+    border-radius: 4px; overflow: hidden;
+    background: #fff; margin-right: 12px;
+    flex-shrink: 0;
+  }
+  .routine-product-img img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center 40%;
+    transform: scale(1.4);
+    display: block;
+  }
+  .routine-product-img .placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Pinyon Script', cursive, sans-serif;
+    font-size: 18px; color: #5c7899;
+  }
+  .routine-product-body { flex: 1; min-width: 0; }
+  .routine-product-name {
+    font-size: 13px; font-weight: 500;
+    color: #000418; line-height: 1.25;
+    margin-bottom: 2px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .routine-product-price {
+    font-size: 12px; color: #5c7899;
+  }
+  .routine-footer {
+    padding: 12px 16px 14px;
+    background: #FAFAF9;
+    border-top: 1px solid #F4F2F0;
+  }
+  .routine-total {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 10px;
+  }
+  .routine-total-label {
+    font-size: 11px; font-weight: 500;
+    color: #5c7899; letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .routine-total-value {
+    font-size: 16px; font-weight: 500;
+    color: #000418;
+  }
+  .routine-cta {
+    display: flex; align-items: center; justify-content: center;
+    background: #000418; color: #fff; text-align: center;
+    padding: 13px 14px; border-radius: 0;
+    font-family: "futura-pt", sans-serif;
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.25s ease, color 0.25s ease;
+    border: 1px solid #000418;
+    min-height: 44px;
+  }
+  .routine-cta:hover { background: #fff; color: #000418; }
   #typing .message.bot { display: flex; gap: 5px; padding: 16px 18px; align-items: center; }
   .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 1.4s infinite ease-in-out; }
   .dot:nth-child(2) { animation-delay: 0.2s; }
@@ -524,26 +629,44 @@ const questionsPerLang = {
   ja: ["肌タイプ", "成分", "朝のケア", "夜のケア", "ルーティン作成"],
   ko: ["피부 타입", "성분", "아침 루틴", "저녁 루틴", "루틴 추천"]
 };
-// Follow-up copy sent to the webhook as a synthetic user message after a click.
-// Two variants: 'added' when the click actually drops the item in the Shopify cart,
-// 'viewing' when the click just opens the product page.
+// Static confirmation copy shown in the chat after a product-card click.
+// Displayed as a bot message, no webhook call, no AI round-trip.
+// 'added' when the click drops the item in the Shopify cart, 'viewing' when it only opens the product page.
 const productClickFollowUpPerLang = {
   added: {
-    en: (name) => `I just added ${name} to my bag. What would you pair it with?`,
-    fr: (name) => `Je viens d'ajouter ${name} à mon panier. Que me recommandez-vous pour l'accompagner ?`,
-    es: (name) => `Acabo de añadir ${name} a mi bolsa. ¿Qué me recomiendas para combinarlo?`,
-    zh: (name) => `我剛把 ${name} 加入購物袋。有什麼可以搭配使用的？`,
-    ja: (name) => `${name} をバッグに追加しました。合わせるならどれがおすすめですか？`,
-    ko: (name) => `방금 ${name}을 장바구니에 담았어요. 함께 쓰면 좋은 제품을 추천해 주세요.`
+    en: (name) => `Added ${name} to your bag. Let me know if you'd like help with anything else.`,
+    fr: (name) => `${name} ajouté à votre panier. Dites-moi si vous avez besoin d'autre chose.`,
+    es: (name) => `${name} añadido a tu bolsa. Avísame si puedo ayudarte con algo más.`,
+    zh: (name) => `已將 ${name} 加入購物袋。如果還有其他問題，隨時告訴我。`,
+    ja: (name) => `${name} をバッグに追加しました。他にもお手伝いできることがあればお知らせください。`,
+    ko: (name) => `${name}을 장바구니에 담았어요. 더 도와드릴 일이 있으면 알려주세요.`
   },
   viewing: {
-    en: (name) => `I'm checking out ${name}. What pairs well with it?`,
-    fr: (name) => `Je regarde ${name}. Qu'est-ce qui se marie bien avec ?`,
-    es: (name) => `Estoy mirando ${name}. ¿Qué combina bien con este producto?`,
-    zh: (name) => `我正在看 ${name}。有什麼適合搭配的產品？`,
-    ja: (name) => `${name} を見ています。相性のよい組み合わせは何ですか？`,
-    ko: (name) => `${name}을 살펴보고 있어요. 함께 쓰면 좋은 제품이 뭐가 있을까요?`
+    en: (name) => `Opening ${name} in a new tab. Let me know if you have any questions about it.`,
+    fr: (name) => `Ouverture de ${name} dans un nouvel onglet. N'hésitez pas si vous avez des questions.`,
+    es: (name) => `Abriendo ${name} en otra pestaña. Avísame si tienes alguna pregunta.`,
+    zh: (name) => `已在新分頁開啟 ${name}。如果有任何問題，隨時告訴我。`,
+    ja: (name) => `${name} を新しいタブで開きました。質問があればお知らせください。`,
+    ko: (name) => `${name}을 새 탭에서 열었어요. 궁금한 점이 있으면 알려주세요.`
   }
+};
+// Routine card localization (title, total, CTA, product count label)
+const routineStrings = {
+  en: { title: 'Your routine', total: 'Total', addAll: 'Add routine to bag', countLabel: (n) => `${n} products` },
+  fr: { title: 'Votre routine', total: 'Total', addAll: 'Ajouter la routine au panier', countLabel: (n) => `${n} produits` },
+  es: { title: 'Tu rutina', total: 'Total', addAll: 'Añadir rutina a la bolsa', countLabel: (n) => `${n} productos` },
+  zh: { title: '您的護膚程序', total: '總計', addAll: '全部加入購物袋', countLabel: (n) => `共 ${n} 件` },
+  ja: { title: 'あなたのルーティン', total: '合計', addAll: 'ルーティンをバッグに追加', countLabel: (n) => `${n} 商品` },
+  ko: { title: '나의 루틴', total: '합계', addAll: '전체 장바구니에 담기', countLabel: (n) => `${n}개 제품` }
+};
+// Confirmation shown in chat after clicking "Add routine to bag"
+const routineAddedConfirmation = {
+  en: (n) => `Added ${n} products to your bag. Let me know if you'd like help with anything else.`,
+  fr: (n) => `${n} produits ajoutés à votre panier. Dites-moi si vous avez besoin d'autre chose.`,
+  es: (n) => `${n} productos añadidos a tu bolsa. Avísame si puedo ayudarte con algo más.`,
+  zh: (n) => `已將 ${n} 件產品加入購物袋。如果還有其他問題，隨時告訴我。`,
+  ja: (n) => `${n} 商品をバッグに追加しました。他にもお手伝いできることがあればお知らせください。`,
+  ko: (n) => `${n}개 제품을 장바구니에 담았어요. 더 도와드릴 일이 있으면 알려주세요.`
 };
 // Button label by mode and language
 const buttonLabelByMode = {
@@ -696,13 +819,96 @@ function buildProductCard(card) {
   if (buyBtn) {
     buyBtn.addEventListener('click', () => {
       trackCardEvent(mode === 'added' ? 'add_to_bag' : 'click', cardProductId, card.name);
-      // Close the upsell loop by nudging the conversation, with copy that matches
-      // what actually happened (real add vs. product view).
+      // Acknowledge the click with a local bot message instead of triggering
+      // another AI round-trip. Keeps the UX calm and non-pushy.
       const builderSet = productClickFollowUpPerLang[mode];
       const builder = (builderSet[currentLang]) || builderSet.en;
-      const followUpText = builder(card.name);
-      // Small delay so the new tab opens first, then the conversation continues
-      setTimeout(() => handleSend(followUpText), 400);
+      const confirmationText = builder(card.name);
+      // Small delay so the new tab opens first, then the confirmation appears.
+      setTimeout(() => addMsg(confirmationText, 'bot'), 400);
+    });
+  }
+  return div;
+}
+// Calculate routine total from a list of product objects with price strings like "$49" or "$44 USD".
+// Assumes all products share the same currency symbol within a single session.
+function calculateRoutineTotal(products) {
+  let total = 0;
+  let symbol = '$';
+  let suffix = '';
+  for (const p of products) {
+    if (!p.price) continue;
+    const match = String(p.price).match(/^\s*([^\d.,\s])?\s*([\d.,]+)(?:\s*([A-Z]{3}))?/);
+    if (match) {
+      if (match[1]) symbol = match[1];
+      if (match[3]) suffix = match[3];
+      total += parseFloat(match[2].replace(/,/g, '')) || 0;
+    }
+  }
+  if (!total) return '';
+  // Keep integer formatting when total is whole
+  const totalStr = total % 1 === 0 ? total.toFixed(0) : total.toFixed(2);
+  return `${symbol}${totalStr}${suffix ? ' ' + suffix : ''}`;
+}
+function buildRoutineCard(routine) {
+  const products = (routine && routine.products) || [];
+  if (products.length === 0) {
+    const empty = document.createElement('div');
+    return empty;
+  }
+  const strings = routineStrings[currentLang] || routineStrings.en;
+  const total = calculateRoutineTotal(products);
+  const div = document.createElement('div');
+  div.className = 'routine-card';
+  // Track impression for each product in the routine
+  products.forEach(p => {
+    const pid = p.product_id || productNameToId[p.name] || p.name;
+    trackCardEvent('routine_impression', pid, p.name);
+  });
+  const productsHtml = products.map((p, idx) => {
+    const imgHtml = p.image
+      ? `<img src="${p.image}" alt="${p.name}" onerror="this.parentElement.innerHTML='<div class=\\'placeholder\\'>SF</div>';">`
+      : `<div class="placeholder">SF</div>`;
+    return `
+      <div class="routine-product">
+        <div class="routine-product-step">${idx + 1}</div>
+        <div class="routine-product-img">${imgHtml}</div>
+        <div class="routine-product-body">
+          <div class="routine-product-name">${p.name}</div>
+          <div class="routine-product-price">${p.price || ''}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+  div.innerHTML = `
+    <div class="routine-header">
+      <div class="routine-title">${strings.title}</div>
+      <div class="routine-count">${strings.countLabel(products.length)}</div>
+    </div>
+    <div class="routine-products">${productsHtml}</div>
+    <div class="routine-footer">
+      ${total ? `
+        <div class="routine-total">
+          <span class="routine-total-label">${strings.total}</span>
+          <span class="routine-total-value">${total}</span>
+        </div>
+      ` : ''}
+      ${routine.bundle_cart_url ? `
+        <a href="${routine.bundle_cart_url}" target="_blank" rel="noopener" class="routine-cta">${strings.addAll}</a>
+      ` : ''}
+    </div>
+  `;
+  const bundleBtn = div.querySelector('.routine-cta');
+  if (bundleBtn) {
+    bundleBtn.addEventListener('click', () => {
+      // Track bundle add for each product
+      products.forEach(p => {
+        const pid = p.product_id || productNameToId[p.name] || p.name;
+        trackCardEvent('routine_add_to_bag', pid, p.name);
+      });
+      const builder = routineAddedConfirmation[currentLang] || routineAddedConfirmation.en;
+      const confirmationText = builder(products.length);
+      setTimeout(() => addMsg(confirmationText, 'bot'), 400);
     });
   }
   return div;
@@ -721,7 +927,7 @@ function shouldShowBotLabel() {
   }
   return false;
 }
-function addMsg(text, type, card = null) {
+function addMsg(text, type, card = null, routineCard = null) {
   const now = Date.now();
   const showTimestamp = shouldShowTimestamp();
   const wrapper = document.createElement('div');
@@ -740,7 +946,12 @@ function addMsg(text, type, card = null) {
     msgDiv.textContent = text;
   }
   wrapper.appendChild(msgDiv);
-  if (card) wrapper.appendChild(buildProductCard(card));
+  // Routine card takes priority over single product card when both are present
+  if (routineCard && routineCard.products && routineCard.products.length > 0) {
+    wrapper.appendChild(buildRoutineCard(routineCard));
+  } else if (card) {
+    wrapper.appendChild(buildProductCard(card));
+  }
   if (showTimestamp) {
     const timeDiv = document.createElement('div');
     timeDiv.className = 'message-time';
@@ -786,7 +997,8 @@ async function handleSend(textOverride) {
     addMsg(
       data.reply || "I'm having trouble connecting. Please try again.",
       'bot',
-      data.product_card || null
+      data.product_card || null,
+      data.routine_card || null
     );
   } catch(e) {
     if (document.getElementById('typing')) document.getElementById('typing').remove();
